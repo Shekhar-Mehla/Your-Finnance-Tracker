@@ -1,0 +1,8 @@
+### api end point for user 
+@url =http://localhost:3000/api/v1/user
+POST {{url}}
+Content-Type: application/json
+
+{
+  "hello":"world"
+}
