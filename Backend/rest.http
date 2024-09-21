@@ -1,8 +1,11 @@
 ### api end point for user 
-@url =http://localhost:3000/api/v1/user
+@url =http://localhost:3000/api/v1/users
 POST {{url}}
 Content-Type: application/json
 
 {
-  "hello":"world"
+  "Fname": "John",
+  "Lname": "Doe",
+  "email": "1@2",
+  "passwordHashed":"123"
 }
