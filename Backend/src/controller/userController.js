@@ -1,17 +1,10 @@
 import { response } from "express";
 import { UserCollection } from "../models/userModel/userModel.js";
-import bcrypt from "bcrypt";
+
+import { encryptedPassword } from "../utils/bcryptjs.js";
 export const PostUsers = async (req, res) => {
   try {
-    const saltRounds = 20;
-    // encrypted the user password before storing to db
-    req.body.passwordHashed = bcrypt.hash(req.body.passwordHashed
-      process.env.SECRET_KEY,
-      saltRounds,
-      function (err, hash) {
-        console.log(hash);
-      }
-    );
+    req.body.passwordHashed = encryptedPassword(req.body.passwordHashed);
     const newUser = await UserCollection(req.body).save();
     newUser?._id
       ? res.status(201).json({
@@ -21,9 +14,17 @@ export const PostUsers = async (req, res) => {
           status: "operation could not be completed try agin later!",
         });
   } catch (error) {
+    if (
+      error.message.includes(
+        "E11000 duplicate key error collection: YFT.users index: email_1"
+      )
+    ) {
+      error.message =
+        "email is already exists please use another email to register";
+    }
     res.json({
-      error: error.message,
-      response,
+      error: "unsuccesful",
+      msg: error.message,
     });
   }
 };

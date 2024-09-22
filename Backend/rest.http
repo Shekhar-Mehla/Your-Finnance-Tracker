@@ -6,6 +6,6 @@ Content-Type: application/json
 {
   "Fname": "John",
   "Lname": "Doe",
-  "email": "1@2",
+  "email": "1@32",
   "passwordHashed":"123"
 }

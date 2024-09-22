@@ -6,10 +6,10 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Transaction from "./pages/Transaction";
 import Login from "./pages/Login";
+import "./App.css";
 const App = () => {
   return (
     <>
-      app
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
