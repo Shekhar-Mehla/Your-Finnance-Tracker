@@ -7,10 +7,13 @@ import App from "./App.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 // react toastify css
 import "react-toastify/dist/ReactToastify.css";
+import { CentralstateProvider } from "./context/ContextApi.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <App></App>
-    </BrowserRouter>
+    <CentralstateProvider>
+      <BrowserRouter>
+        <App></App>
+      </BrowserRouter>
+    </CentralstateProvider>
   </StrictMode>
 );

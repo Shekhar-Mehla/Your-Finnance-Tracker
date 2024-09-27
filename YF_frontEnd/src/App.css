@@ -1,4 +1,10 @@
-.registerContainer {
-  min-height: 100vh;
-  max-height: 100vh;
+.AlertAnimatio {
+  color: rgba(3, 51, 65, 0.949);
+}
+.QuotesContainer {
+  background-color: rgba(0, 0, 0, 0.128);
+}
+.AlertAutor {
+  color: black;
+  float: right;
 }
