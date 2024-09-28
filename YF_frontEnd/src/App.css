@@ -1,8 +1,30 @@
 .AlertAnimatio {
-  color: rgba(3, 51, 65, 0.949);
+  color: rgba(20, 18, 1, 0.949);
 }
 .QuotesContainer {
-  background-color: rgba(0, 0, 0, 0.128);
+  background-color: rgba(0, 0, 0, 0.386);
+  transition: backgroud-color 4s;
+
+  animation: bg 3s linear 2s 50 alternate;
+}
+@keyframes bg {
+  0% {
+    opacity: 1;
+    display: block;
+    background-color: rgb(106, 255, 0);
+    color: rgba(27, 15, 15, 0.675);
+    transform: rotateZ(-10deg);
+    transform: scale(0.8);
+  }
+
+  100% {
+    opacity: 0.4;
+    display: none;
+    background-color: aquamarine;
+    color: red;
+    transform: rotateZ(20deg);
+    font-weight: 500;
+  }
 }
 .AlertAutor {
   color: black;

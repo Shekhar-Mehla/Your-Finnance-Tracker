@@ -11,8 +11,8 @@ import { imges } from "../assets/assets.js";
 import Quotes from "../Component/Quotes.jsx";
 
 const Register = () => {
-  const { InputFields } = useContext(CentralState);
-  console.log(InputFields);
+  const { InputFields, handleOnSubmit } = useContext(CentralState);
+
   return (
     <Container className=" p-5 bg-dark registerContainer text-white d-flex justify-content-center align-items-center">
       <Row className="w-100  ">
@@ -34,7 +34,11 @@ const Register = () => {
         </Col>
         <Col className="border " md={6}>
           <h2>Register here</h2>
-          <Form className="p-3">
+          <Form
+            onSubmit={(e) => handleOnSubmit(e)}
+            className="p-3"
+            method="post"
+          >
             {InputFields.map((input) => {
               return <CustomeInput key={input.name} {...input}></CustomeInput>;
             })}

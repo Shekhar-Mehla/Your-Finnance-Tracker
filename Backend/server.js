@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { route } from "./src/routes/UserRouter.js";
 // database connection function
 import { connectiondb } from "./src/config/DatabaseConnection.js";
@@ -8,6 +9,7 @@ connectiondb();
 
 const PORT = process.env.port || 3000;
 server.use(express.json());
+server.use(cors());
 
 server.use("/api/v1/users", route);
 

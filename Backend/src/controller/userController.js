@@ -1,17 +1,19 @@
-import { response } from "express";
 import { UserCollection } from "../models/userModel/userModel.js";
-
-import { encryptedPassword } from "../utils/bcryptjs.js";
+import { encryptedPassword, ComparePassword } from "../utils/bcryptjs.js";
+import { jwtTocken } from "../utils/Jwt.js";
 export const PostUsers = async (req, res) => {
   try {
+    req.body.confirmPasswordHashed = null;
     req.body.passwordHashed = encryptedPassword(req.body.passwordHashed);
     const newUser = await UserCollection(req.body).save();
     newUser?._id
       ? res.status(201).json({
-          status: "successfull",
+          status: "success",
+          message: "you have registered succefully. you may login now!",
         })
-      : res.status(401).jsonss({
-          status: "operation could not be completed try agin later!",
+      : res.status(401).jsons({
+          status: "error",
+          message: "operation could not be completed try agin later!",
         });
   } catch (error) {
     if (
@@ -23,8 +25,46 @@ export const PostUsers = async (req, res) => {
         "email is already exists please use another email to register";
     }
     res.json({
-      error: "unsuccesful",
-      msg: error.message,
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+export const GetUser = async (req, res) => {
+  try {
+    // verify user to login step by step
+    const { email } = req.body;
+    // step 1. get user by email
+    const User = await UserCollection.findOne({ email });
+    if (User?._id) {
+      // step 2 compare the password using bcrypt
+      const isverification = ComparePassword(
+        User.passwordHashed,
+        req.body.passwordHashed
+      );
+
+      // add jwt here if verification true
+      if (isverification) {
+        const token = jwtTocken({ email });
+        console.log(token, "hello token is created");
+        User.passwordHashed = null;
+        res.status(200).json({
+          status: "success",
+          message: "you have logged i  succesfullly",
+          User,
+          token,
+        });
+      }
+      return;
+    }
+    res.status(401).json({
+      status: "error",
+      message: "invalid email address check your email and try again!",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: error.message,
     });
   }
 };

@@ -1,4 +1,6 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
+import { postUser, loginUser } from "../AxiousHelper/axious.js";
+import { toast } from "react-toastify";
 
 export const CentralState = createContext();
 
@@ -88,6 +90,29 @@ export const CentralstateProvider = ({ children }) => {
         "You can’t just sit back and wait for things to happen; you have to make them happen.",
     },
   ];
+  const [form, setForm] = useState({});
+  // handle on input
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setForm({ ...form, [name]: value });
+  };
+  // onFormSubmit
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    if (form.passwordHashed == form.confirmPasswordHashed) {
+      const { method } = e.target;
+      postUser(form, method);
+      return;
+    }
+    if (!form.confirmPasswordHashed) {
+      const { method } = e.target;
+      loginUser(form, method);
+      return;
+    }
+    return toast.error("password did not match");
+  };
 
   const InputFields = [
     {
@@ -96,6 +121,9 @@ export const CentralstateProvider = ({ children }) => {
       type: "text",
       name: "Fname",
       required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
     },
     {
       label: "Last Name",
@@ -103,6 +131,9 @@ export const CentralstateProvider = ({ children }) => {
       type: "text",
       name: "Lname",
       required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
     },
     {
       label: "Email",
@@ -110,6 +141,9 @@ export const CentralstateProvider = ({ children }) => {
       type: "email",
       name: "email",
       required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
     },
     {
       label: "Password",
@@ -117,6 +151,9 @@ export const CentralstateProvider = ({ children }) => {
       type: "password",
       name: "passwordHashed",
       required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
     },
     {
       label: "Confirm Password",
@@ -124,11 +161,15 @@ export const CentralstateProvider = ({ children }) => {
       type: "password",
       name: "confirmPasswordHashed",
       required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
     },
   ];
   const value = {
     InputFields,
     expenseTrackingQuotes,
+    handleOnSubmit: (e) => handleOnSubmit(e),
   };
   return (
     <CentralState.Provider value={value}>{children}</CentralState.Provider>

@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 
-const CustomeInput = ({ ...input }) => {
+const CustomeInput = ({ ...input}) => {
   const { label, ...rest } = input;
   return (
     <>

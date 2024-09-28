@@ -1,11 +1,22 @@
 ### api end point for user 
-@url =http://localhost:3000/api/v1/users
+@url =http://localhost:3000/api/v1/users/register
 POST {{url}}
 Content-Type: application/json
 
 {
   "Fname": "John",
   "Lname": "Doe",
-  "email": "1@32",
-  "passwordHashed":"123"
+  "email": "1@1",
+  "passwordHashed":"111"
+}
+### get user for login
+@getUrl = http://localhost:3000/api/v1/users/login
+POST {{getUrl}}
+Content-Type: application/json
+
+
+{
+ 
+  "email": "1@1",
+  "passwordHashed":"111"
 }
