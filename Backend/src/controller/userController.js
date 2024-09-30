@@ -46,7 +46,7 @@ export const GetUser = async (req, res) => {
       // add jwt here if verification true
       if (isverification) {
         const token = jwtTocken({ email });
-        console.log(token, "hello token is created");
+
         User.passwordHashed = null;
         res.status(200).json({
           status: "success",
@@ -64,6 +64,16 @@ export const GetUser = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: "error",
+      message: error.message,
+    });
+  }
+};
+export const getUserProfile = async (res, req, next) => {
+  try {
+    console.log(req.body);
+  } catch (error) {
+    res.status(400).json({
+      error: "error",
       message: error.message,
     });
   }

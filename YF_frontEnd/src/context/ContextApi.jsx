@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { postUser, loginUser } from "../AxiousHelper/axious.js";
+import { postUser, loginUser, getUserProfile } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
 
 export const CentralState = createContext();
@@ -94,21 +94,25 @@ export const CentralstateProvider = ({ children }) => {
   // handle on input
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
     setForm({ ...form, [name]: value });
   };
   // onFormSubmit
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-
+    // register new user
     if (form.passwordHashed == form.confirmPasswordHashed) {
       const { method } = e.target;
       postUser(form, method);
       return;
     }
+    // login user
     if (!form.confirmPasswordHashed) {
       const { method } = e.target;
-      loginUser(form, method);
+      const result = await loginUser(form, method);
+      // localStorage.setItem("token", token);
+      // const result = await getUserProfile();
+      console.log(result);
       return;
     }
     return toast.error("password did not match");

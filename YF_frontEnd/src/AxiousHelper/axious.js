@@ -2,7 +2,7 @@ import axios from "axios";
 const baseurl = "http://localhost:3000/api/v1";
 import { toast } from "react-toastify";
 
-const ApiendPoint = async ({ method, url, data }) => {
+const ApiendPoint = async ({ method, url, data, headers }) => {
   try {
     const response = await axios({
       method,
@@ -10,8 +10,8 @@ const ApiendPoint = async ({ method, url, data }) => {
       data,
     });
     const serverdata = await response.data;
-
-    return toast[serverdata.status](serverdata.message);
+    toast[serverdata.status](serverdata.message);
+    return serverdata;
   } catch (error) {
     return toast.error(error.message);
   }
@@ -33,5 +33,18 @@ export const loginUser = (data, method) => {
     url: baseurl + "/users/login",
     data,
   };
-  ApiendPoint(obj);
+  return ApiendPoint(obj);
+};
+
+// get user profile after getting the token fro  fron end
+export const getUserProfile = () => {
+  const obj = {
+    method: "get",
+    url: baseurl + "/users",
+
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  return ApiendPoint(obj);
 };
