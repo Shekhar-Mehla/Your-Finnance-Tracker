@@ -68,9 +68,23 @@ export const GetUser = async (req, res) => {
     });
   }
 };
-export const getUserProfile = async (res, req, next) => {
+export const getUserProfile = async (req, res, next) => {
   try {
-    console.log(req.body);
+    const user = req.info;
+    const { _id } = req.info;
+    if (_id) {
+      res.status(200).json({
+        status: "sucsess",
+        message: "user has found",
+        _id,
+        user,
+      });
+      return;
+    }
+    res.status(400).json({
+      error: "error",
+      message: "cannot find user",
+    });
   } catch (error) {
     res.status(400).json({
       error: "error",

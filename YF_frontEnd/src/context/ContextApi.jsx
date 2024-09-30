@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { postUser, loginUser, getUserProfile } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
 
@@ -90,6 +90,12 @@ export const CentralstateProvider = ({ children }) => {
         "You can’t just sit back and wait for things to happen; you have to make them happen.",
     },
   ];
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const user = setUser(getUserProfile());
+    console.log(user);
+  }, []);
   const [form, setForm] = useState({});
   // handle on input
   const handleOnChange = (e) => {

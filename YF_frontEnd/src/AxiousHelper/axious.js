@@ -8,9 +8,13 @@ const ApiendPoint = async ({ method, url, data, headers }) => {
       method,
       url,
       data,
+      headers,
     });
-    const serverdata = await response.data;
-    toast[serverdata.status](serverdata.message);
+    const serverdata = response.data;
+    toast.promise(serverdata, "please wait");
+    const { status, message } = await serverdata;
+    toast[status](message);
+
     return serverdata;
   } catch (error) {
     return toast.error(error.message);

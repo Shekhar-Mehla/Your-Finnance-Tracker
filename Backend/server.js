@@ -12,7 +12,7 @@ const PORT = process.env.port || 3000;
 server.use(express.json());
 server.use(cors());
 
-server.use("/api/v1/users", Authmiddleware, route);
+server.use("/api/v1/users", route);
 
 server.listen(PORT, (error) => {
   error
