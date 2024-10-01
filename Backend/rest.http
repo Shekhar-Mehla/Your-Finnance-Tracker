@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "Fname": "John",
   "Lname": "Doe",
-  "email": "1@1",
+  "email": "1@2",
   "passwordHashed":"111"
 }
 ### get user for login
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
  
-  "email": "1@1",
+  "email": "1@2",
   "passwordHashed":"111"
 }
 
@@ -25,3 +25,50 @@ Content-Type: application/json
 GET  http://localhost:3000/api/v1/users
 Content-Type: application/json
 Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyNzY5NTc5NH0.4SYUEasYDw-J8Hxi4T7rrcQ3Nc45z-_mc8wr-Mp2KRg
+
+
+
+### Post new transaction
+POST http://localhost:3000/api/v1/transactions
+Content-Type: application/json
+
+{
+  "Tittle": "salary",
+    "type":"income",
+   "UserId":"66fbc3b1c41ff4e0f285ab46",
+   "amount":100
+    }
+
+### get transaction
+GET  http://localhost:3000/api/v1/transactions
+Content-Type: application/json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,9 +11,8 @@ const ApiendPoint = async ({ method, url, data, headers }) => {
       headers,
     });
     const serverdata = response.data;
-    toast.promise(serverdata, "please wait");
+
     const { status, message } = await serverdata;
-    toast[status](message);
 
     return serverdata;
   } catch (error) {
@@ -21,13 +20,13 @@ const ApiendPoint = async ({ method, url, data, headers }) => {
   }
 };
 // register the new user
-export const postUser = (data, method) => {
+export const postUser = async (data, method) => {
   const obj = {
     method,
     url: baseurl + "/users/register",
     data,
   };
-  ApiendPoint(obj);
+  return await ApiendPoint(obj);
 };
 
 // login user

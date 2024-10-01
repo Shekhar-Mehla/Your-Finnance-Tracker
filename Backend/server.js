@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { route } from "./src/routes/UserRouter.js";
+import { UserRoute } from "./src/routes/UserRouter.js";
+import { TransactionsRoute } from "./src/routes/TransactionsRoute.js";
 // database connection function
 import { connectiondb } from "./src/config/DatabaseConnection.js";
 import { Authmiddleware } from "./src/AuthMiddleware.js";
@@ -12,7 +13,8 @@ const PORT = process.env.port || 3000;
 server.use(express.json());
 server.use(cors());
 
-server.use("/api/v1/users", route);
+server.use("/api/v1/users", UserRoute);
+server.use("/api/v1/transactions", Authmiddleware, TransactionsRoute);
 
 server.listen(PORT, (error) => {
   error

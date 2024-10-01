@@ -13,7 +13,7 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login></Login>} />
+        <Route path="/" element={<Dashboard></Dashboard>} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register></Register>} />
         <Route

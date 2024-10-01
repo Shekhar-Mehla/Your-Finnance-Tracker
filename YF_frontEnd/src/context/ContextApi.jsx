@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { postUser, loginUser, getUserProfile } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
+import { Navigate } from "react-router-dom";
 
 export const CentralState = createContext();
 
@@ -91,11 +92,12 @@ export const CentralstateProvider = ({ children }) => {
     },
   ];
   const [user, setUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  useEffect(() => {
-    const user = setUser(getUserProfile());
-    console.log(user);
-  }, []);
+  // useEffect(() => {
+  //   const user = setUser(getUserProfile());
+  //   console.log(user);
+  // }, []);
   const [form, setForm] = useState({});
   // handle on input
   const handleOnChange = (e) => {
@@ -109,16 +111,20 @@ export const CentralstateProvider = ({ children }) => {
     // register new user
     if (form.passwordHashed == form.confirmPasswordHashed) {
       const { method } = e.target;
-      postUser(form, method);
+      const result = postUser(form, method);
       return;
     }
     // login user
     if (!form.confirmPasswordHashed) {
       const { method } = e.target;
-      const result = await loginUser(form, method);
-      // localStorage.setItem("token", token);
-      // const result = await getUserProfile();
-      console.log(result);
+      const result = loginUser(form, method);
+      toast.promise(result, { pending: "please wait" });
+
+      const { status, message } = await result;
+      toast[status](message);
+      console.log(status);
+      status =="" && <Navigate to="dashboard" replace={true} />;
+
       return;
     }
     return toast.error("password did not match");
@@ -180,6 +186,8 @@ export const CentralstateProvider = ({ children }) => {
     InputFields,
     expenseTrackingQuotes,
     handleOnSubmit: (e) => handleOnSubmit(e),
+    isLoggedIn,
+    setIsLoggedIn,
   };
   return (
     <CentralState.Provider value={value}>{children}</CentralState.Provider>
