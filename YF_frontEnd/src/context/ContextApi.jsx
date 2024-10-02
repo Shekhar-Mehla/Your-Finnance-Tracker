@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { postUser, loginUser, getUserProfile } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const CentralState = createContext();
 
@@ -91,14 +91,14 @@ export const CentralstateProvider = ({ children }) => {
         "You can’t just sit back and wait for things to happen; you have to make them happen.",
     },
   ];
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ hello: "wprlf" });
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const user = setUser(getUserProfile());
-  //   console.log(user);
-  // }, []);
   const [form, setForm] = useState({});
+  useEffect(() => {
+    user?._id && navigate("/dashboard");
+  }, [user]);
   // handle on input
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -120,12 +120,10 @@ export const CentralstateProvider = ({ children }) => {
       const result = loginUser(form, method);
       toast.promise(result, { pending: "please wait" });
 
-      const { status, message } = await result;
+      const { status, message, User, token } = await result;
       toast[status](message);
-      console.log(status);
-      status =="" && <Navigate to="dashboard" replace={true} />;
 
-      return;
+      return setUser(User);
     }
     return toast.error("password did not match");
   };
