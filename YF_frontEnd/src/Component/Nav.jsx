@@ -1,9 +1,9 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
+
 import Navbar from "react-bootstrap/Navbar";
 
-export const Navbar = () => {
+const Nav = () => {
   return (
     <Navbar bg="dark" data-bs-theme="dark">
       <Container>
@@ -17,3 +17,4 @@ export const Navbar = () => {
     </Navbar>
   );
 };
+export default Nav;
