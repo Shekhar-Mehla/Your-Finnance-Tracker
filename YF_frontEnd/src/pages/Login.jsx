@@ -4,8 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { imges } from "../assets/assets.js";
-import Quotes from "../Component/Quotes.jsx";
+
 import { CentralState } from "../context/ContextApi.jsx";
 import { useContext } from "react";
 import CustomeInput from "../Component/CustomeInput.jsx";
@@ -17,40 +16,38 @@ const Login = () => {
 
   return (
     <>
-      <Container className=" p-5 bg-dark registerContainer text-white d-flex justify-content-center align-items-center">
-        <Row className="w-100  ">
-          <Col md={5}>
-            <div
-              className="d-flex justify-content-center align-items-center "
-              style={{
-                backgroundImage: `url(${imges[0]})`,
-                width: "100%",
-                height: "90vh",
-
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                border: "2px solid #000",
-              }}
-            >
-              <Quotes></Quotes>
+      <Container className="bg-light vh-100">
+        <Row className="justify-content-center align-items-center h-100">
+          <Col md={6} className="d-none d-md-block p-0">
+            <div className="login-background">
+              <h1 className="text-white text-center">
+                Your Financial Journey Starts Here
+              </h1>
             </div>
           </Col>
-          <Col className="border " md={6}>
-            <h2>Login !</h2>
-            <Form
-              onSubmit={(e) => handleOnSubmit(e)}
-              className="p-3"
-              method="post"
-            >
-              {LoginInputFields.map((input) => {
-                return (
-                  <CustomeInput key={input.name} {...input}></CustomeInput>
-                );
-              })}
-              <Button className="w-100" variant="primary" type="submit">
-                Submit
+          <Col md={6} className="p-5 shadow-lg rounded bg-white">
+            <div className="text-center mb-4">
+              <h2 className="mb-3">Welcome Back!</h2>
+              <p className="text-muted">Please log in to continue.</p>
+            </div>
+
+            <Form onSubmit={(e) => handleOnSubmit(e)}>
+              {LoginInputFields.map((input) => (
+                <CustomeInput key={input.name} {...input} />
+              ))}
+              <Button
+                className="w-100 mt-3 btn-animate"
+                variant="primary"
+                type="submit"
+              >
+                Login
               </Button>
             </Form>
+            <div className="mt-3 text-center">
+              <a href="#" className="text-primary">
+                Forgot Password?
+              </a>
+            </div>
           </Col>
         </Row>
       </Container>

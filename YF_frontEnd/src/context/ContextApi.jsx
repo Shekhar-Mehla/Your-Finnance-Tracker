@@ -91,7 +91,7 @@ export const CentralstateProvider = ({ children }) => {
         "You can’t just sit back and wait for things to happen; you have to make them happen.",
     },
   ];
-  const [user, setUser] = useState({ hello: "wprlf" });
+  const [user, setUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
 
@@ -129,6 +129,37 @@ export const CentralstateProvider = ({ children }) => {
   };
 
   const InputFields = [
+    {
+      label: "Tittle",
+      placeholder:
+        '"Enter where you spend or receive money (e.g., salary, shopping)"',
+      type: "text",
+      name: "Tittle",
+      required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
+    },
+    {
+      label: "amount",
+      placeholder: "enter your amount",
+      type: Number,
+      name: "amount",
+      required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
+    },
+    {
+      label: "Date of Transaction",
+
+      type: "date",
+      name: "date",
+      required: true,
+      onChange: (e) => {
+        handleOnChange(e);
+      },
+    },
     {
       label: "First Name",
       placeholder: "enter your first name",
