@@ -11,8 +11,12 @@ import { imges } from "../assets/assets.js";
 import Quotes from "../Component/Quotes.jsx";
 
 const Register = () => {
-  const { InputFields, handleOnSubmit } = useContext(CentralState);
-
+  const { InputFields, handleOnSubmit, handleOnChange } =
+    useContext(CentralState);
+  const registerInputFields = InputFields.filter(
+    (input) =>
+      input.name != "Tittle" && input.name != "amount" && input.name != "date"
+  );
   return (
     <>
       <Container className="bg-light   vh-100">
@@ -34,8 +38,12 @@ const Register = () => {
             </div>
 
             <Form onSubmit={(e) => handleOnSubmit(e)}>
-              {InputFields.map((input) => (
-                <CustomeInput key={input.name} {...input} />
+              {registerInputFields.map((input) => (
+                <CustomeInput
+                  key={input.name}
+                  onChange={(e) => handleOnChange(e)}
+                  {...input}
+                />
               ))}
               <Button
                 className="w-100 mt-3 btn-animate"

@@ -1,222 +1,82 @@
 import { createContext, useEffect, useState } from "react";
 import { postUser, loginUser, getUserProfile } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { InputFields } from "../Utility/Inputfield.js";
+import { expenseTrackingQuotes } from "../Utility/Quotes.js";
 
 export const CentralState = createContext();
 
 export const CentralstateProvider = ({ children }) => {
-  const expenseTrackingQuotes = [
-    {
-      author: "Dave Ramsey",
-      quote:
-        "You must gain control over your money or the lack of it will forever control you.",
-    },
-    {
-      author: "Suze Orman",
-      quote: "The more you know about money, the more you can grow it.",
-    },
-    {
-      author: "Robert Kiyosaki",
-      quote:
-        "Financial freedom is available to those who learn about it and work for it.",
-    },
-    {
-      author: "Benjamin Franklin",
-      quote: "An investment in knowledge pays the best interest.",
-    },
-    {
-      author: "Jim Rohn",
-      quote: "Take care of your body. It’s the only place you have to live.",
-    },
-    {
-      author: "Warren Buffett",
-      quote: "Beware of little expenses; a small leak will sink a great ship.",
-    },
-    { author: "Peter Drucker", quote: "What gets measured gets managed." },
-    {
-      author: "Chris Hogan",
-      quote:
-        "You need to tell your money where to go, not wonder where it went.",
-    },
-    {
-      author: "T. Harv Eker",
-      quote: "Your bank account is a report card of your financial habits.",
-    },
-    {
-      author: "Mary Hunt",
-      quote: "Saving is a process, not a one-time event.",
-    },
-    {
-      author: "David Bach",
-      quote: "The key to wealth is to spend less than you earn.",
-    },
-    {
-      author: "Michael LeBoeuf",
-      quote:
-        "A budget is telling your money where to go instead of wondering where it went.",
-    },
-    {
-      author: "Robert Allen",
-      quote:
-        "How you manage your money is a reflection of how you manage your life.",
-    },
-    {
-      author: "Tony Robbins",
-      quote:
-        "Setting goals is the first step in turning the invisible into the visible.",
-    },
-    {
-      author: "Ramit Sethi",
-      quote: "You don’t have to live a life of deprivation to save money.",
-    },
-    {
-      author: "Vicki Robin",
-      quote:
-        "Money is a tool. It will take you wherever you wish, but it will not replace you as the driver.",
-    },
-    {
-      author: "Albert Einstein",
-      quote: "Compound interest is the eighth wonder of the world.",
-    },
-    { author: "Nadia Bilchik", quote: "Saving is a habit, not a destination." },
-    {
-      author: "Zig Ziglar",
-      quote:
-        "You don’t have to be great to start, but you have to start to be great.",
-    },
-    {
-      author: "Katherine Paterson",
-      quote:
-        "You can’t just sit back and wait for things to happen; you have to make them happen.",
-    },
-  ];
   const [user, setUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({});
-  useEffect(() => {
-    user?._id && navigate("/dashboard");
-  }, [user]);
+  // toggle function to show and hide the model
+  const toggle = () => {
+    show ? setShow(false) : setShow(true);
+  };
+  const location = useLocation();
+  if (!user) {
+    setIsLoggedIn(false);
+  }
+
   // handle on input
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
 
     setForm({ ...form, [name]: value });
   };
   // onFormSubmit
   const handleOnSubmit = async (e) => {
     e.preventDefault();
+    console.log(form);
     // register new user
-    if (form.passwordHashed == form.confirmPasswordHashed) {
-      const { method } = e.target;
-      const result = postUser(form, method);
+    if (
+      form.confirmPasswordHashed &&
+      form.passwordHashed == form.confirmPasswordHashed
+    ) {
+      console.log("post user");
+      const result = postUser(form);
+      toast.promise(result, { pending: "please wait" });
+      const { status, message } = await result;
+      toast[status](message);
       return;
     }
     // login user
-    if (!form.confirmPasswordHashed) {
-      const { method } = e.target;
-      const result = loginUser(form, method);
+    if (!form.confirmPasswordHashed && !form.type) {
+      console.log("login");
+      const result = loginUser(form);
       toast.promise(result, { pending: "please wait" });
 
-      const { status, message, User, token } = await result;
+      const { status, message, token } = await result;
       toast[status](message);
+      localStorage.setItem("token", token);
+      token ? navigate("/dashboard") : navigate("/login");
 
-      return setUser(User);
+      return;
+    }
+    if (form.type) {
+      console.log("on transactuion submit");
+      return;
     }
     return toast.error("password did not match");
   };
 
-  const InputFields = [
-    {
-      label: "Tittle",
-      placeholder:
-        '"Enter where you spend or receive money (e.g., salary, shopping)"',
-      type: "text",
-      name: "Tittle",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "amount",
-      placeholder: "enter your amount",
-      type: Number,
-      name: "amount",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "Date of Transaction",
-
-      type: "date",
-      name: "date",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "First Name",
-      placeholder: "enter your first name",
-      type: "text",
-      name: "Fname",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "Last Name",
-      placeholder: "enter your Last name",
-      type: "text",
-      name: "Lname",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "Email",
-      placeholder: "enter your email",
-      type: "email",
-      name: "email",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "Password",
-      placeholder: "enter your password",
-      type: "password",
-      name: "passwordHashed",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-    {
-      label: "Confirm Password",
-      placeholder: "enter confirmed password",
-      type: "password",
-      name: "confirmPasswordHashed",
-      required: true,
-      onChange: (e) => {
-        handleOnChange(e);
-      },
-    },
-  ];
   const value = {
+    handleOnChange: (e) => handleOnChange(e),
     InputFields,
     expenseTrackingQuotes,
     handleOnSubmit: (e) => handleOnSubmit(e),
     isLoggedIn,
     setIsLoggedIn,
+    show,
+    setShow,
+    toggle,
+    handleOnChange: (e) => handleOnChange(e),
   };
   return (
     <CentralState.Provider value={value}>{children}</CentralState.Provider>

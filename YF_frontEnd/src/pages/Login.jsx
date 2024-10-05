@@ -4,12 +4,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 
 import { CentralState } from "../context/ContextApi.jsx";
 import { useContext } from "react";
 import CustomeInput from "../Component/CustomeInput.jsx";
 const Login = () => {
-  const { InputFields, handleOnSubmit } = useContext(CentralState);
+  const { InputFields, handleOnSubmit, handleOnChange } =
+    useContext(CentralState);
   const LoginInputFields = InputFields.filter(
     (input) => input.name == "email" || input.name == "passwordHashed"
   );
@@ -33,7 +35,11 @@ const Login = () => {
 
             <Form onSubmit={(e) => handleOnSubmit(e)}>
               {LoginInputFields.map((input) => (
-                <CustomeInput key={input.name} {...input} />
+                <CustomeInput
+                  key={input.name}
+                  onChange={(e) => handleOnChange(e)}
+                  {...input}
+                />
               ))}
               <Button
                 className="w-100 mt-3 btn-animate"
@@ -47,6 +53,12 @@ const Login = () => {
               <a href="#" className="text-primary">
                 Forgot Password?
               </a>
+            </div>
+            <div>
+              {" "}
+              <p>
+                Don't have an account? <Link to="/register">Register now</Link>
+              </p>
             </div>
           </Col>
         </Row>

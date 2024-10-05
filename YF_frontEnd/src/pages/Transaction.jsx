@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import TransactionForm from "../Component/TransactionForm";
 import Table from "react-bootstrap/Table";
 import { Button, Container } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
+import { CentralState } from "../context/ContextApi";
 
 const Transaction = () => {
+  const { toggle, show } = useContext(CentralState);
+
   return (
     <Container>
       {" "}
       <div>
-        <TransactionForm></TransactionForm>
+        <Modal
+          className=" "
+          show={show}
+          onHide={toggle}
+          size="md
+          "
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <h2 className="mb-3">Enter your Transaction</h2>
+          </Modal.Header>
+          <Modal.Body>
+            <TransactionForm></TransactionForm>
+          </Modal.Body>
+        </Modal>
+
         <div className="m-2">
-          <Button>ADD Transaction</Button>
+          <Button onClick={toggle}>ADD Transaction</Button>
         </div>
-        <Table className="table table-custom table-striped table-bordered table-hover">
+        <Table className="table table-custom table-striped table-bordered border-dark border table-hover">
           <thead>
             <tr>
               <th>#</th>

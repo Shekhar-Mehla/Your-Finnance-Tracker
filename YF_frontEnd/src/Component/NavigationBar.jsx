@@ -5,7 +5,12 @@ import { useContext } from "react";
 import { CentralState } from "../context/ContextApi.jsx";
 
 const NavigationBar = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(CentralState);
+  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(CentralState);
+  const onLogoutHandler = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setUser({});
+  };
 
   return (
     <>
@@ -21,7 +26,9 @@ const NavigationBar = () => {
                 <>
                   <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                   <Nav.Link href="/transactions">Transactions</Nav.Link>
-                  <Nav.Link href="/login">Logout</Nav.Link>
+                  <Nav.Link href="/login" onClick={onLogoutHandler}>
+                    Logout
+                  </Nav.Link>
                 </>
               ) : (
                 <>

@@ -1,16 +1,16 @@
 ### api end point for user 
-@url =http://localhost:3000/api/v1/users/register
+@url =http://localhost:3002/api/v1/users/register
 POST {{url}}
 Content-Type: application/json
 
 {
   "Fname": "John",
   "Lname": "Doe",
-  "email": "1@2",
+  "email": "1@5",
   "passwordHashed":"111"
 }
 ### get user for login
-@getUrl = http://localhost:3000/api/v1/users/login
+@getUrl = http://localhost:3002/api/v1/users/login
 POST {{getUrl}}
 Content-Type: application/json
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 ### get user profile
-GET  http://localhost:3000/api/v1/users
+GET  http://localhost:3002/api/v1/users
 Content-Type: application/json
 Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyNzY5NTc5NH0.4SYUEasYDw-J8Hxi4T7rrcQ3Nc45z-_mc8wr-Mp2KRg
 
@@ -40,7 +40,7 @@ Content-Type: application/json
     }
 
 ### get transaction
-GET  http://localhost:3000/api/v1/transactions
+GET  http://localhost:3002/api/v1/transactions
 Content-Type: application/json
 
 

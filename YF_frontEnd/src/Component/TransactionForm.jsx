@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,7 +9,10 @@ import { useContext } from "react";
 import CustomeInput from "../Component/CustomeInput.jsx";
 
 const TransactionForm = () => {
-  const { InputFields, handleOnSubmit } = useContext(CentralState);
+  const { InputFields, handleOnSubmit, handleOnChange } =
+    useContext(CentralState);
+
+  // filtering the array for custom input fileds
   const LoginInputFields = InputFields.filter(
     (input) =>
       input.name == "Tittle" || input.name == "amount" || input.name == "date"
@@ -17,18 +20,21 @@ const TransactionForm = () => {
 
   return (
     <>
-      <Container className="bg-light vh-100">
-        <Row className="justify-content-center align-items-center h-100">
-          <Col md={6} className="p-5 shadow-lg rounded bg-white">
+      <Container className="bg-light">
+        <Row className="justify-content-center align-items-center  ">
+          <Col md={12} className=" shadow-lg rounded bg-white">
             <div className="text-center mb-4">
-              <h2 className="mb-3">Enter your Transaction</h2>
               <p className="text-muted">Please log in to continue.</p>
             </div>
 
             <Form onSubmit={(e) => handleOnSubmit(e)}>
-              <Form.Group controlId="formGridState">
-                <Form.Label>State</Form.Label>
-                <Form.Select defaultValue="Choose...">
+              <Form.Group
+                className="mb-3"
+                controlId="formGridState"
+                onChange={handleOnChange}
+              >
+                <Form.Label>Transaction Type</Form.Label>
+                <Form.Select name="type" defaultValue="Choose...">
                   <option disabled> Choose...</option>
                   <option value="income">Income</option>
                   <option value="expense">Expense</option>

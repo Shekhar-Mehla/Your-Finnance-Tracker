@@ -9,7 +9,7 @@ import { Authmiddleware } from "./src/AuthMiddleware.js";
 const server = express();
 connectiondb();
 
-const PORT = process.env.port || 3000;
+const PORT = process.env.port || 3002;
 server.use(express.json());
 server.use(cors());
 

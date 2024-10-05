@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Auth from "./Auth/Auth";
 import Layout from "./Component/Layout";
@@ -11,7 +11,15 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import "./App.css";
 import TransactionForm from "./Component/TransactionForm";
+
+import { CentralState } from "./context/ContextApi";
 const App = () => {
+  const { user } = useContext(CentralState);
+
+  useEffect(() => {
+    user?._id && navigate("/dashboard");
+  }, [user]);
+
   return (
     <>
       <div className="wrapper">

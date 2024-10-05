@@ -1,6 +1,7 @@
 import { UserCollection } from "../models/userModel/userModel.js";
 import { encryptedPassword, ComparePassword } from "../utils/bcryptjs.js";
 import { jwtTocken } from "../utils/Jwt.js";
+// add new user to the database
 export const PostUsers = async (req, res) => {
   try {
     req.body.confirmPasswordHashed = null;
@@ -71,6 +72,7 @@ export const GetUser = async (req, res) => {
 export const getUserProfile = async (req, res, next) => {
   try {
     const user = req.info;
+    console.log(user);
     const { _id } = req.info;
     if (_id) {
       res.status(200).json({

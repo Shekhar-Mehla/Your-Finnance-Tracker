@@ -1,8 +1,9 @@
 import axios from "axios";
-const baseurl = "http://localhost:3000/api/v1";
+const baseurl = "http://localhost:3002/api/v1";
 import { toast } from "react-toastify";
 
-const ApiendPoint = async ({ method, url, data, headers }) => {
+const ApiendPoint = async ({ data, method, url, headers }) => {
+  console.log(data, url, method, headers);
   try {
     const response = await axios({
       method,
@@ -10,19 +11,16 @@ const ApiendPoint = async ({ method, url, data, headers }) => {
       data,
       headers,
     });
-    const serverdata = response.data;
 
-    const { status, message } = await serverdata;
-
-    return serverdata;
+    return response.data;
   } catch (error) {
     return toast.error(error.message);
   }
 };
 // register the new user
-export const postUser = async (data, method) => {
+export const postUser = async (data) => {
   const obj = {
-    method,
+    method: "post",
     url: baseurl + "/users/register",
     data,
   };
@@ -30,9 +28,9 @@ export const postUser = async (data, method) => {
 };
 
 // login user
-export const loginUser = (data, method) => {
+export const loginUser = (data) => {
   const obj = {
-    method,
+    method: "post",
     url: baseurl + "/users/login",
     data,
   };
@@ -40,7 +38,7 @@ export const loginUser = (data, method) => {
 };
 
 // get user profile after getting the token fro  fron end
-export const getUserProfile = () => {
+export const getUserProfile = async () => {
   const obj = {
     method: "get",
     url: baseurl + "/users",
@@ -49,5 +47,6 @@ export const getUserProfile = () => {
       Authorization: localStorage.getItem("token"),
     },
   };
-  return ApiendPoint(obj);
+  const result = await ApiendPoint(obj);
+  return result;
 };
