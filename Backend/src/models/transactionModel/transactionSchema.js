@@ -14,6 +14,7 @@ export const transactionSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
     amount: {
       required: true,
       type: Number,

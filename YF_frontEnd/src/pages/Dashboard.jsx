@@ -7,7 +7,6 @@ const Dashboard = () => {
     <div>
       Dashboard
       <img src={imges[0]} />
-      <Quotes></Quotes>
     </div>
   );
 };

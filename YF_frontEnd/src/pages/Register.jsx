@@ -5,14 +5,13 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import CustomeInput from "../Component/CustomeInput.jsx";
-import { CentralState } from "../context/ContextApi.jsx";
-import { useContext } from "react";
+import { userdata } from "../context/ContextApi.jsx";
+
 import { imges } from "../assets/assets.js";
 import Quotes from "../Component/Quotes.jsx";
 
 const Register = () => {
-  const { InputFields, handleOnSubmit, handleOnChange } =
-    useContext(CentralState);
+  const { InputFields, handleOnSubmit, handleOnChange } = userdata();
   const registerInputFields = InputFields.filter(
     (input) =>
       input.name != "Tittle" && input.name != "amount" && input.name != "date"

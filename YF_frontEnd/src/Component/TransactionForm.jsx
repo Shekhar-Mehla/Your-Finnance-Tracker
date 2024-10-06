@@ -4,13 +4,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { CentralState } from "../context/ContextApi.jsx";
-import { useContext } from "react";
+import { userdata } from "../context/ContextApi.jsx";
 import CustomeInput from "../Component/CustomeInput.jsx";
 
 const TransactionForm = () => {
-  const { InputFields, handleOnSubmit, handleOnChange } =
-    useContext(CentralState);
+  const { InputFields, handleOnSubmit, handleOnChange } = userdata();
 
   // filtering the array for custom input fileds
   const LoginInputFields = InputFields.filter(
@@ -34,14 +32,21 @@ const TransactionForm = () => {
                 onChange={handleOnChange}
               >
                 <Form.Label>Transaction Type</Form.Label>
-                <Form.Select name="type" defaultValue="Choose...">
-                  <option disabled> Choose...</option>
+                <Form.Select required name="type" defaultValue="">
+                  <option disabled value="">
+                    {" "}
+                    Choose...
+                  </option>
                   <option value="income">Income</option>
                   <option value="expense">Expense</option>
                 </Form.Select>
               </Form.Group>
               {LoginInputFields.map((input) => (
-                <CustomeInput key={input.name} {...input} />
+                <CustomeInput
+                  key={input.name}
+                  onChange={handleOnChange}
+                  {...input}
+                />
               ))}
               <Button
                 className="w-100 mt-3 btn-animate"

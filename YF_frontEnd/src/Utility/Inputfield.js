@@ -8,7 +8,7 @@ export const InputFields = [
     required: true,
   },
   {
-    label: "amount",
+    label: "Amount",
     placeholder: "enter your amount",
     type: "number",
     name: "amount",

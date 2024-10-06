@@ -6,18 +6,18 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 
-import { CentralState } from "../context/ContextApi.jsx";
-import { useContext } from "react";
+import { userdata } from "../context/ContextApi.jsx";
+
 import CustomeInput from "../Component/CustomeInput.jsx";
 const Login = () => {
-  const { InputFields, handleOnSubmit, handleOnChange } =
-    useContext(CentralState);
+  const { InputFields, handleOnSubmit, handleOnChange, user } = userdata();
   const LoginInputFields = InputFields.filter(
     (input) => input.name == "email" || input.name == "passwordHashed"
   );
-
+  console.log(user);
   return (
     <>
+      (
       <Container className="bg-light vh-100">
         <Row className="justify-content-center align-items-center h-100">
           <Col md={6} className="d-none d-md-block p-0">

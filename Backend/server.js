@@ -14,7 +14,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use("/api/v1/users", UserRoute);
-server.use("/api/v1/transactions", Authmiddleware, TransactionsRoute);
+server.use("/api/v1/transactions", TransactionsRoute);
 
 server.listen(PORT, (error) => {
   error

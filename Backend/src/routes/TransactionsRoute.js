@@ -7,5 +7,5 @@ import { PostTransaction,getTransaction } from "../controller/TransactionControl
 // } from "../controller/userController.js";
 import { Authmiddleware } from "../AuthMiddleware.js";
 export const TransactionsRoute = express.Router();
-TransactionsRoute.post("/", PostTransaction);
+TransactionsRoute.post("/addtransaction", PostTransaction);
 TransactionsRoute.get("/", getTransaction);

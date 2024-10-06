@@ -3,23 +3,27 @@ import { UserCollection } from "../src/models/userModel/userModel.js";
 
 export const Authmiddleware = async (req, res, next) => {
   try {
-    // const token = await req.headers["authorization"];
-    // console.log(token);
-    const token = req.headers.authorization;
-    if (token) {
-      const decoded =jwt.verify(token, process.env.SECRET_KEY);
-      
-      const { email } = decoded;
-      const User = await UserCollection.findOne({ email });
-      User.passwordHashed = null;
-      req.info = User;
+    const { authorization } = req.headers;
+    if (authorization) {
+      const decode = jwt.verify(authorization, process.env.SECRET_KEY);
+      if (decode) {
+        const { email } = decode;
+        const user = await UserCollection.findOne({ email });
+        if (user?._id) {
+          user.passwordHashed = undefined;
+          req.info = user;
+          next();
+        }
 
-      next();
-      return;
+        return;
+      }
     }
   } catch (error) {
-    res.status(500).json({
-      error: "internal server error",
+    if (error.message.includes("jwt exp")) {
+      error.message = "token is expired";
+    }
+    res.status(404).json({
+      status: "error",
       message: error.message,
     });
   }

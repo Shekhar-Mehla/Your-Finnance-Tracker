@@ -3,7 +3,6 @@ const baseurl = "http://localhost:3002/api/v1";
 import { toast } from "react-toastify";
 
 const ApiendPoint = async ({ data, method, url, headers }) => {
-  console.log(data, url, method, headers);
   try {
     const response = await axios({
       method,
@@ -14,7 +13,8 @@ const ApiendPoint = async ({ data, method, url, headers }) => {
 
     return response.data;
   } catch (error) {
-    return toast.error(error.message);
+    console.log(error.response.data);
+    return toast.error(error.response.data);
   }
 };
 // register the new user
@@ -28,13 +28,14 @@ export const postUser = async (data) => {
 };
 
 // login user
-export const loginUser = (data) => {
+export const loginUser = async (data) => {
   const obj = {
     method: "post",
     url: baseurl + "/users/login",
     data,
   };
-  return ApiendPoint(obj);
+  const result = await ApiendPoint(obj);
+  return result;
 };
 
 // get user profile after getting the token fro  fron end
@@ -49,4 +50,17 @@ export const getUserProfile = async () => {
   };
   const result = await ApiendPoint(obj);
   return result;
+};
+
+// post the transaction
+export const postTransaction = async (data) => {
+  const obj = {
+    method: "post",
+    url: baseurl + "/transactions/addtransaction",
+    data,
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  return await ApiendPoint(obj);
 };

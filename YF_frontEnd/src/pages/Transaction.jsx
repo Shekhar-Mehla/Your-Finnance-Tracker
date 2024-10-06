@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import TransactionForm from "../Component/TransactionForm";
 import Table from "react-bootstrap/Table";
 import { Button, Container } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { CentralState } from "../context/ContextApi";
+import { userdata } from "../context/ContextApi";
 
 const Transaction = () => {
-  const { toggle, show } = useContext(CentralState);
+  const { toggle, show } = userdata();
 
   return (
     <Container>

@@ -10,10 +10,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { CentralstateProvider } from "./context/ContextApi.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <CentralstateProvider>
-        <App></App>
-      </CentralstateProvider>
-    </BrowserRouter>
+
+<BrowserRouter>
+    <CentralstateProvider>
+      <App></App>
+    </CentralstateProvider>
+  </BrowserRouter>
+
   </StrictMode>
+  
 );

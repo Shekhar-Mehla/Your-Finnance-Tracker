@@ -17,19 +17,19 @@ Content-Type: application/json
 
 {
  
-  "email": "1@2",
+  "email": "1@8",
   "passwordHashed":"111"
 }
 
 ### get user profile
 GET  http://localhost:3002/api/v1/users
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyNzY5NTc5NH0.4SYUEasYDw-J8Hxi4T7rrcQ3Nc45z-_mc8wr-Mp2KRg
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAOCIsImlhdCI6MTcyODIwMTMzNSwiZXhwIjoxNzI4MjAxMzk1fQ.3tFheiftkmms3Z5UOeKIGwWv_s5ww3KnfT5-ZZJV2CI
 
 
 
 ### Post new transaction
-POST http://localhost:3000/api/v1/transactions
+POST http://localhost:3002/api/v1/transactions
 Content-Type: application/json
 
 {
