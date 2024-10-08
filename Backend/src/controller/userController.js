@@ -38,12 +38,13 @@ export const GetUser = async (req, res) => {
     // step 1. get user by email
     const User = await UserCollection.findOne({ email });
     if (User?._id) {
+      console.log("user has found now i will check passowrd");
       // step 2 compare the password using bcrypt
       const isverification = ComparePassword(
         User.passwordHashed,
         req.body.passwordHashed
       );
-
+      console.log(isverification);
       // add jwt here if verification true
       if (isverification) {
         const token = jwtTocken({ email });
@@ -55,8 +56,8 @@ export const GetUser = async (req, res) => {
           User,
           token,
         });
+        return;
       }
-      return;
     }
     res.status(401).json({
       status: "error",

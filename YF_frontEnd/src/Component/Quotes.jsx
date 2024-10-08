@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { userdata } from "../context/ContextApi";
+import { expenseTrackingQuotes } from "../Utility/Quotes";
 import { Container } from "react-bootstrap";
 
 const Quotes = () => {
-  const { expenseTrackingQuotes } = userdata();
   const [quote, setQuote] = useState(expenseTrackingQuotes[0]);
 
   useEffect(() => {

@@ -4,12 +4,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { userdata } from "../context/ContextApi.jsx";
+import { InputFields } from "../Utility/Inputfield.js";
 import CustomeInput from "../Component/CustomeInput.jsx";
+import { useForm } from "../context/useForm.js";
 
 const TransactionForm = () => {
-  const { InputFields, handleOnSubmit, handleOnChange } = userdata();
-
+  const { handleOnSubmit, handleOnChange } = useForm();
   // filtering the array for custom input fileds
   const LoginInputFields = InputFields.filter(
     (input) =>

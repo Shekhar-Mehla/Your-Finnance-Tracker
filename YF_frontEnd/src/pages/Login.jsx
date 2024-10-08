@@ -9,12 +9,15 @@ import { Link } from "react-router-dom";
 import { userdata } from "../context/ContextApi.jsx";
 
 import CustomeInput from "../Component/CustomeInput.jsx";
+import { useForm } from "../context/useForm.js";
+import { InputFields } from "../Utility/Inputfield.js";
 const Login = () => {
-  const { InputFields, handleOnSubmit, handleOnChange, user } = userdata();
+  const { handleOnSubmit, handleOnChange } = useForm();
+
   const LoginInputFields = InputFields.filter(
     (input) => input.name == "email" || input.name == "passwordHashed"
   );
-  console.log(user);
+
   return (
     <>
       (
