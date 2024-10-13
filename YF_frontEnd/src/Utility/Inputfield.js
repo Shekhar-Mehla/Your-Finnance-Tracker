@@ -19,7 +19,7 @@ export const InputFields = [
     label: "Date of Transaction",
 
     type: "date",
-    name: "date",
+    name: "TransactionDate",
     required: true,
   },
   {

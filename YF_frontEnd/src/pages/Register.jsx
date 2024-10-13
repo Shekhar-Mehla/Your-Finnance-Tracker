@@ -15,7 +15,9 @@ const Register = () => {
   const { handleOnSubmit, handleOnChange } = useForm();
   const registerInputFields = InputFields.filter(
     (input) =>
-      input.name != "Tittle" && input.name != "amount" && input.name != "date"
+      input.name != "Tittle" &&
+      input.name != "amount" &&
+      input.name != "TransactionDate"
   );
   return (
     <>

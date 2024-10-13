@@ -12,9 +12,9 @@ const ApiendPoint = async ({ data, method, url, headers }) => {
     });
 
     return response.data;
+  
   } catch (error) {
-    console.log(error.response.data);
-    return toast.error(error.response.data);
+    return error.response.data;
   }
 };
 // register the new user
@@ -63,4 +63,16 @@ export const postTransaction = async (data) => {
     },
   };
   return await ApiendPoint(obj);
+};
+export const getTranscation = () => {
+  const obj = {
+    method: "get",
+    url: baseurl + "/transactions",
+
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  const result = ApiendPoint(obj);
+  return result;
 };

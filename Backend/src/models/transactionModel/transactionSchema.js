@@ -19,6 +19,10 @@ export const transactionSchema = new mongoose.Schema(
       required: true,
       type: Number,
     },
+    TransactionDate: {
+      required: true,
+      type: Date,
+    },
   },
   { timestamps: true }
 );

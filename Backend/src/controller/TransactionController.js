@@ -1,8 +1,10 @@
 import { TransactionCollection } from "../models/transactionModel/transactionModel.js";
 export const PostTransaction = async (req, res) => {
   try {
-    console.log(req.body);
-    const newTransaction = await TransactionCollection(req.body).save();
+    const UserId = req.info._id;
+    const transaction = { ...req.body, UserId };
+    console.log(transaction);
+    const newTransaction = await TransactionCollection(transaction).save();
     newTransaction?._id
       ? res.status(201).json({
           status: "success",
@@ -14,7 +16,7 @@ export const PostTransaction = async (req, res) => {
         });
   } catch (error) {
     res.status(500).json({
-      status: "error",
+      status: "erddrror",
       message: error.message,
     });
   }
@@ -22,7 +24,7 @@ export const PostTransaction = async (req, res) => {
 export const getTransaction = async (req, res) => {
   try {
     const UserId = req.info._id;
-
+    console.log(UserId);
     const result = await TransactionCollection.find({ UserId });
     res.status(200).json({
       result,

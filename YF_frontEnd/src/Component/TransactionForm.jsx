@@ -13,7 +13,9 @@ const TransactionForm = () => {
   // filtering the array for custom input fileds
   const LoginInputFields = InputFields.filter(
     (input) =>
-      input.name == "Tittle" || input.name == "amount" || input.name == "date"
+      input.name == "Tittle" ||
+      input.name == "amount" ||
+      input.name == "TransactionDate"
   );
 
   return (

@@ -29,20 +29,24 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAOCIsImlhdCI6M
 
 
 ### Post new transaction
-POST http://localhost:3002/api/v1/transactions
+POST http://localhost:3002/api/v1/transactions/addtransaction
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyODUyNDM5MSwiZXhwIjoxNzI4NTI3OTkxfQ.6SqP0WQiZDhQlvMtVJ9yjFCJoeeR5pR6xKUpLM0oceU
+
+
 
 {
   "Tittle": "salary",
     "type":"income",
    "UserId":"66fbc3b1c41ff4e0f285ab46",
-   "amount":100
+   "amount":100,
+   "TransactionDate":"2012-07-01"
     }
 
 ### get transaction
 GET  http://localhost:3002/api/v1/transactions
 Content-Type: application/json
-
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyODUyNDM5MSwiZXhwIjoxNzI4NTI3OTkxfQ.6SqP0WQiZDhQlvMtVJ9yjFCJoeeR5pR6xKUpLM0oceU
 
 
 

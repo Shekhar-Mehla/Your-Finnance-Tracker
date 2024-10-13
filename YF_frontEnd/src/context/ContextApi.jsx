@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
+import { getTranscation } from "../AxiousHelper/axious.js";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const CentralState = createContext();
 
 export const CentralstateProvider = ({ children }) => {
   const [user, setUser] = useState({});
+  const [transactions, setTransactions] = useState([]);
 
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
@@ -28,16 +29,14 @@ export const CentralstateProvider = ({ children }) => {
     }
   }, [user?._id, goToPage, navigate]);
 
-  // this function will be called each time we change in input filed
-
-  // this function will be call each time we submit the form such as login,registration and transaction submission
-
   const value = {
     user,
     setUser,
     show,
     setShow,
     toggle,
+    transactions,
+    setTransactions,
   };
   return (
     <CentralState.Provider value={value}>{children}</CentralState.Provider>
