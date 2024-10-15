@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import TransactionForm from "../Component/TransactionForm";
 import Table from "react-bootstrap/Table";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { userdata } from "../context/ContextApi";
 import { getTranscation } from "../AxiousHelper/axious.js";
+import Form from "react-bootstrap/Form";
+import Badge from "react-bootstrap/Badge";
 
 const Transaction = () => {
   const { toggle, show } = userdata();
@@ -33,7 +35,7 @@ const Transaction = () => {
   return (
     <Container>
       {" "}
-      <div>
+      <Row>
         <Modal
           className=" "
           show={show}
@@ -50,16 +52,35 @@ const Transaction = () => {
             <TransactionForm></TransactionForm>
           </Modal.Body>
         </Modal>
+        <Card className="transactionNav">
+          <Card.Header>
+            {" "}
+            <Row className="  align-items-center mb-3  mt-2 mb-2 d-flex justify-content-between gap-2">
+              <Col md="auto">
+                {" "}
+                <Button variant="primary" className="w-100">
+                  Number of Transactions <Badge bg="secondary">9</Badge>
+                  <span className="visually-hidden">unread messages</span>
+                </Button>
+              </Col>
+              <Col md="auto" className="d-grid">
+                <Form.Control size="md" type="text" placeholder="Large text" />
+              </Col>
+              <Col md="auto" className="d-grid">
+                <Button className="" onClick={toggle}>
+                  ADD Transaction
+                </Button>
+              </Col>
+            </Row>
+          </Card.Header>
+        </Card>
 
-        <div className="m-2">
-          <Button onClick={toggle}>ADD Transaction</Button>
-        </div>
-        <Table className="table table-custom table-striped  table-hover">
+        <Table className="table table-custom table-striped border mt-3  table-hover">
           <thead>
             <tr>
               <th>No.</th>
               <th>Tittle</th>
-              <th>Type</th>
+
               <th>In</th>
               <th>Out</th>
               <th>Date</th>
@@ -79,7 +100,7 @@ const Transaction = () => {
                   >
                     <td>{i}</td>
                     <td>{transaction.Tittle}</td>
-                    <td>{transaction.type}</td>
+
                     {transaction.type === "income" ? (
                       <>
                         <td className="text-success">
@@ -104,18 +125,18 @@ const Transaction = () => {
               })}
           </tbody>
         </Table>
-        <div className="d-flex justify-content-center">
+        <Card className="text-center p-3 tottalBalance mb-3">
           {TottalBalance > 0 ? (
-            <div className="text-success">
+            <Row className="text-success">
               <strong>Total balance =${TottalBalance}</strong>
-            </div>
+            </Row>
           ) : (
-            <div className="text-danger">
+            <Row className="text-danger">
               <strong>Total balance =-${Math.abs(TottalBalance)}</strong>
-            </div>
+            </Row>
           )}
-        </div>
-      </div>
+        </Card>
+      </Row>
     </Container>
   );
 };

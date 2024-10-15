@@ -128,3 +128,11 @@ a:hover {
     font-size: 1.5rem;
   }
 }
+/* transaction page navbar where search button add trasction button i am removing the defult border */
+.transactionNav,
+.tottalBalance {
+  --bs-card-border-width: unset !important;
+}
+.reactDashboarSummaryICONS {
+  font-size: 4rem;
+}
