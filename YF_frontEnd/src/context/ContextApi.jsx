@@ -21,8 +21,6 @@ export const CentralstateProvider = ({ children }) => {
   // this useeffect hook responsible to navigate the user once user is authenticated
   const goToPage = location?.state?.from?.pathname || location.pathname;
 
-  console.log(goToPage);
-
   useEffect(() => {
     if (goToPage !== location.pathname) {
       user?._id && navigate(goToPage);

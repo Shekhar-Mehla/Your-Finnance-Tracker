@@ -1,21 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TransactionForm from "../Component/TransactionForm";
 import Table from "react-bootstrap/Table";
-import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+  ModalHeader,
+} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { userdata } from "../context/ContextApi";
 import { getTranscation } from "../AxiousHelper/axious.js";
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
+import { MdDelete } from "react-icons/md";
+import { TbHttpDelete } from "react-icons/tb";
 
 const Transaction = () => {
+  const [display, setDisplay] = useState(false);
+  const [transactionsToDelete, setTransactionToDelete] = useState([]);
+
   const { toggle, show } = userdata();
   const { user, transactions, setTransactions } = userdata();
 
+  const shuoldfect = useRef(true);
   useEffect(() => {
-    user?._id && fetchTransactions();
+    user?._id && shuoldfect.current && fetchTransactions();
+    if (user._id) {
+      shuoldfect.current = false;
+    }
   }, [user._id]);
 
+  const handalOnDeletButtonClick = () => {
+    if (transactionsToDelete.length > 0) {
+      console.log("call delete api and fetch the  transaction from database ");
+    }
+    setDisplay(!display);
+    return;
+  };
+  const handleOnSeearch = (e) => {
+    const { value } = e.target;
+  };
+  const handleOnSelectChange = (e) => {
+    const { value, checked } = e.target;
+    if (value == "Select All") {
+      console.log("selet all and run this code");
+      checked
+        ? setTransactionToDelete(transactions.map((trans) => trans._id))
+        : setTransactionToDelete([]);
+    } else {
+      checked
+        ? setTransactionToDelete([...transactionsToDelete, value])
+        : setTransactionToDelete([
+            ...transactionsToDelete.filter((_id) => _id != value),
+          ]);
+    }
+  };
+  console.log(transactionsToDelete);
   const fetchTransactions = async () => {
     try {
       const transaction = await getTranscation();
@@ -32,6 +74,7 @@ const Transaction = () => {
       ? acc + transaction.amount
       : acc - transaction.amount;
   }, 0);
+
   return (
     <Container>
       {" "}
@@ -64,17 +107,39 @@ const Transaction = () => {
                 </Button>
               </Col>
               <Col md="auto" className="d-grid">
-                <Form.Control size="md" type="text" placeholder="Large text" />
+                <Form.Control
+                  onChange={handleOnSeearch}
+                  size="md"
+                  type="text"
+                  placeholder="Search transaction..."
+                />
               </Col>
               <Col md="auto" className="d-grid">
                 <Button className="" onClick={toggle}>
                   ADD Transaction
                 </Button>
               </Col>
+              <Col md="auto">
+                <Button
+                  onClick={handalOnDeletButtonClick}
+                  className="  fs-2 text-danger bg-transparent border-0 border"
+                >
+                  <MdDelete></MdDelete>
+                  <TbHttpDelete></TbHttpDelete>
+                </Button>
+              </Col>
             </Row>
           </Card.Header>
         </Card>
 
+        <div className={display ? "display" : "display-none"}>
+          <Form.Check
+            value="Select All"
+            onChange={handleOnSelectChange}
+            label="Select All"
+            checked={transactionsToDelete.length == transactions.length}
+          ></Form.Check>
+        </div>
         <Table className="table table-custom table-striped border mt-3  table-hover">
           <thead>
             <tr>
@@ -87,7 +152,6 @@ const Transaction = () => {
             </tr>
           </thead>
           <tbody>
-            {console.log(transactions)}
             {transactions.length > 0 &&
               transactions.map((transaction, i) => {
                 return (
@@ -98,8 +162,18 @@ const Transaction = () => {
                         transactions.length < 0 ? "#f8d7da" : "#d4edda",
                     }}
                   >
-                    <td>{i}</td>
-                    <td>{transaction.Tittle}</td>
+                    <td className="d-flex gap-2 ">
+                      {" "}
+                      {i}
+                      <Form.Check
+                        onChange={handleOnSelectChange}
+                        checked={transactionsToDelete.includes(transaction._id)}
+                        value={transaction._id}
+                        className={display ? "display" : "display-none"}
+                      ></Form.Check>
+                    </td>
+
+                    <td> {transaction.Tittle}</td>
 
                     {transaction.type === "income" ? (
                       <>
@@ -125,6 +199,7 @@ const Transaction = () => {
               })}
           </tbody>
         </Table>
+
         <Card className="text-center p-3 tottalBalance mb-3">
           {TottalBalance > 0 ? (
             <Row className="text-success">

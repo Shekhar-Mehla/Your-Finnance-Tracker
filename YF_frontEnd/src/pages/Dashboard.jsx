@@ -3,7 +3,7 @@ import { imges } from "../assets/assets.js";
 import Quotes from "../Component/Quotes.jsx";
 import { Col, Container, Row } from "react-bootstrap";
 import DashboardHero from "../Component/DashboardHero.jsx";
-import PieCharts from "../Component/PieChart.jsx";
+import PieCharts from "../Component/PieCharts.jsx";
 
 const Dashboard = () => {
   return (

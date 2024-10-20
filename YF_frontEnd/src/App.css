@@ -136,3 +136,10 @@ a:hover {
 .reactDashboarSummaryICONS {
   font-size: 4rem;
 }
+/* display none or bolck on delete button click */
+.dispaly {
+  display: block;
+}
+.display-none {
+  display: none;
+}
