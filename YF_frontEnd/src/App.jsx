@@ -11,22 +11,10 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import "./App.css";
 
-import { autoLogin } from "./Utility/Autologin";
-import { userdata } from "./context/ContextApi";
 
 const App = () => {
-  const { user, setUser } = userdata();
+ 
 
-  useEffect(() => {
-    !user?._id && autoLoginUser();
-  }, [user._id]);
-
-  const autoLoginUser = async () => {
-    const user = await autoLogin();
-    if (user?._id) {
-      return setUser(user);
-    }
-  };
   return (
     <>
       <Routes>

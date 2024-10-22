@@ -12,7 +12,6 @@ const ApiendPoint = async ({ data, method, url, headers }) => {
     });
 
     return response.data;
-  
   } catch (error) {
     return error.response.data;
   }
@@ -75,4 +74,19 @@ export const getTranscation = () => {
   };
   const result = ApiendPoint(obj);
   return result;
+};
+// delete transaction api
+export const deleteTransaction = async (transactionsToDelete) => {
+  console.log("delete axious helper called");
+  const obj = {
+    method: "delete",
+    url: baseurl + "/transactions/deleteTransactins",
+    data: transactionsToDelete,
+
+    headers: {
+      Authorization: localStorage.getItem("token"),
+    },
+  };
+  const result = await ApiendPoint(obj);
+  return result
 };

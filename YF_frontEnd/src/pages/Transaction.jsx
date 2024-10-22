@@ -1,53 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TransactionForm from "../Component/TransactionForm";
 import Table from "react-bootstrap/Table";
-import {
-  Button,
-  Container,
-  Row,
-  Col,
-  Card,
-  ModalHeader,
-} from "react-bootstrap";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { userdata } from "../context/ContextApi";
-import { getTranscation } from "../AxiousHelper/axious.js";
+
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import { MdDelete } from "react-icons/md";
 import { TbHttpDelete } from "react-icons/tb";
+import { toast } from "react-toastify";
+
+import { deleteTransaction } from "../AxiousHelper/axious.js";
 
 const Transaction = () => {
-  const [display, setDisplay] = useState(false);
   const [transactionsToDelete, setTransactionToDelete] = useState([]);
+  const { transactions, fetchTransactions } = userdata();
+  const [show, setShow] = useState(false);
+  const [display, setDisplay] = useState(false);
+  const [transactionsToDispaly, setTransactionsTODisplay] =
+    useState(transactions);
 
-  const { toggle, show } = userdata();
-  const { user, transactions, setTransactions } = userdata();
+  // Reason i used the useeffect here beacuse transaction becuase of api call is not available when component render for the first time
 
-  const shuoldfect = useRef(true);
   useEffect(() => {
-    user?._id && shuoldfect.current && fetchTransactions();
-    if (user._id) {
-      shuoldfect.current = false;
-    }
-  }, [user._id]);
+    setTransactionsTODisplay(transactions);
+  }, [transactions]);
 
-  const handalOnDeletButtonClick = () => {
-    if (transactionsToDelete.length > 0) {
-      console.log("call delete api and fetch the  transaction from database ");
-    }
-    setDisplay(!display);
-    return;
+  console.log("how many time it is printing");
+  const toggle = () => {
+    show ? setShow(false) : setShow(true);
   };
-  const handleOnSeearch = (e) => {
-    const { value } = e.target;
-  };
+
   const handleOnSelectChange = (e) => {
     const { value, checked } = e.target;
     if (value == "Select All") {
       console.log("selet all and run this code");
       checked
-        ? setTransactionToDelete(transactions.map((trans) => trans._id))
+        ? setTransactionToDelete(
+            transactionsToDispaly.map((trans) => trans._id)
+          )
         : setTransactionToDelete([]);
     } else {
       checked
@@ -57,17 +49,40 @@ const Transaction = () => {
           ]);
     }
   };
-  console.log(transactionsToDelete);
-  const fetchTransactions = async () => {
-    try {
-      const transaction = await getTranscation();
 
-      if (transaction) {
-        setTransactions(transaction.result);
+  const handalOnDeletButtonClick = async () => {
+    if (transactionsToDelete.length) {
+      if (
+        confirm(
+          `are you sure you want to delete ${transactionsToDelete.length}  transaction ?`
+        )
+      ) {
+        console.log("delete the transactio");
+
+        console.log(transactionsToDelete.length);
+        console.log(transactionsToDelete);
+
+        const pending = deleteTransaction(transactionsToDelete);
+        toast.promise(pending, { pending: "please wait" });
+        const { status, message } = await pending;
+        if (status == "success") {
+          toast[status](message);
+          fetchTransactions();
+          setTransactionToDelete([])
+        }
+        // call transaction api
       }
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
     }
+    return setDisplay(!display);
+  };
+
+  const handleOnSeearch = (e) => {
+    const { value } = e.target;
+
+    const filetredTransaction = transactions.filter(({ Tittle }) => {
+      return Tittle.toLowerCase().includes(value.toLowerCase());
+    });
+    setTransactionsTODisplay(filetredTransaction);
   };
   const TottalBalance = transactions.reduce((acc, transaction) => {
     return transaction.type === "income"
@@ -102,7 +117,8 @@ const Transaction = () => {
               <Col md="auto">
                 {" "}
                 <Button variant="primary" className="w-100">
-                  Number of Transactions <Badge bg="secondary">9</Badge>
+                  Number of Transactions{" "}
+                  <Badge bg="secondary">{transactionsToDispaly?.length}</Badge>
                   <span className="visually-hidden">unread messages</span>
                 </Button>
               </Col>
@@ -137,7 +153,9 @@ const Transaction = () => {
             value="Select All"
             onChange={handleOnSelectChange}
             label="Select All"
-            checked={transactionsToDelete.length == transactions.length}
+            checked={
+              transactionsToDelete.length == transactionsToDispaly.length
+            }
           ></Form.Check>
         </div>
         <Table className="table table-custom table-striped border mt-3  table-hover">
@@ -152,51 +170,50 @@ const Transaction = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.length > 0 &&
-              transactions.map((transaction, i) => {
-                return (
-                  <tr
-                    key={transaction._id}
-                    style={{
-                      backgroundColor:
-                        transactions.length < 0 ? "#f8d7da" : "#d4edda",
-                    }}
-                  >
-                    <td className="d-flex gap-2 ">
-                      {" "}
-                      {i}
-                      <Form.Check
-                        onChange={handleOnSelectChange}
-                        checked={transactionsToDelete.includes(transaction._id)}
-                        value={transaction._id}
-                        className={display ? "display" : "display-none"}
-                      ></Form.Check>
-                    </td>
+            {transactionsToDispaly.map((transaction, i) => {
+              return (
+                <tr
+                  key={transaction._id}
+                  style={{
+                    backgroundColor:
+                      transactions.length < 0 ? "#f8d7da" : "#d4edda",
+                  }}
+                >
+                  <td className="d-flex gap-2 ">
+                    {" "}
+                    {i}
+                    <Form.Check
+                      onChange={handleOnSelectChange}
+                      checked={transactionsToDelete.includes(transaction._id)}
+                      value={transaction._id}
+                      className={display ? "display" : "display-none"}
+                    ></Form.Check>
+                  </td>
 
-                    <td> {transaction.Tittle}</td>
+                  <td> {transaction.Tittle}</td>
 
-                    {transaction.type === "income" ? (
-                      <>
-                        <td className="text-success">
-                          <strong>${transaction.amount}.00</strong>
-                        </td>
-                        <td></td>
-                      </>
-                    ) : (
-                      <>
-                        <td></td>
-                        <td className="text-danger">
-                          <strong className="ml-2">
-                            -${transaction.amount}.00
-                          </strong>
-                        </td>
-                      </>
-                    )}
+                  {transaction.type === "income" ? (
+                    <>
+                      <td className="text-success">
+                        <strong>${transaction.amount}.00</strong>
+                      </td>
+                      <td></td>
+                    </>
+                  ) : (
+                    <>
+                      <td></td>
+                      <td className="text-danger">
+                        <strong className="ml-2">
+                          -${transaction.amount}.00
+                        </strong>
+                      </td>
+                    </>
+                  )}
 
-                    <td>{transaction.TransactionDate.slice(0, 10)}</td>
-                  </tr>
-                );
-              })}
+                  <td>{transaction.TransactionDate.slice(0, 10)}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
 

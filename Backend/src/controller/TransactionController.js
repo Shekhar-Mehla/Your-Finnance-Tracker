@@ -36,3 +36,23 @@ export const getTransaction = async (req, res) => {
     });
   }
 };
+export const deleteTransaction = async (req, res) => {
+  try {
+    const UserId = req.info._id;
+    const transactionsToDelete = req.body;
+    const result = await TransactionCollection.deleteMany({
+      UserId,
+      _id: { $in: transactionsToDelete },
+    });
+    res.status(200).json({
+      status: "success",
+      message: "you have deleted your transactioin successfully",
+      result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: "error",
+      message: error.message,
+    });
+  }
+};

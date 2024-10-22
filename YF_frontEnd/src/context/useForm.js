@@ -51,9 +51,15 @@ const handleOnSubmit = async (e, form, setUser, navigate, goToPage) => {
 
   // this code will be executed when user will add new transaction
   if (form.type || form.amount || form.date || form.Tittle) {
-    const reponse = await postTransaction(form);
-
-    reponse && toast.success("Transaction is  added succefully");
+    const pending = postTransaction(form);
+    toast.promise(pending, { pending: "please wait" });
+    const { status, message } = await pending;
+    console.log(status, message);
+    toast[status](message);
+    if (status == "success") {
+      await fetchTransactions();
+      console.log("i ma hewre");
+    }
     return;
   }
   return toast.error("password did not match");
@@ -61,7 +67,7 @@ const handleOnSubmit = async (e, form, setUser, navigate, goToPage) => {
 
 export const useForm = () => {
   const [form, setForm] = useState({});
-  const { setUser } = userdata();
+  const { setUser, fetchTransactions } = userdata();
   const navigate = useNavigate();
   const location = useLocation();
   const [isSubmitted, setIssubmitted] = useState(false);
@@ -70,7 +76,15 @@ export const useForm = () => {
     handleOnChange: (e) => handleOnChange(e, form, setForm),
 
     handleOnSubmit: (e) =>
-      handleOnSubmit(e, form, setUser, navigate, goToPage, setIssubmitted),
+      handleOnSubmit(
+        e,
+        form,
+        setUser,
+        navigate,
+        goToPage,
+        setIssubmitted,
+        fetchTransactions
+      ),
   };
 
   return value;

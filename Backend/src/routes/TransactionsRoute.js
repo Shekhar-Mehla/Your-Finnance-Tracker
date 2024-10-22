@@ -1,11 +1,11 @@
 import express from "express";
-import { PostTransaction,getTransaction } from "../controller/TransactionController.js";
-// import {
-//   PostUsers,
-//   GetUser,
-//   getUserProfile,
-// } from "../controller/userController.js";
-import { Authmiddleware } from "../AuthMiddleware.js";
+import {
+  PostTransaction,
+  getTransaction,
+  deleteTransaction,
+} from "../controller/TransactionController.js";
+
 export const TransactionsRoute = express.Router();
 TransactionsRoute.post("/addtransaction", PostTransaction);
 TransactionsRoute.get("/", getTransaction);
+TransactionsRoute.delete("/deleteTransactins", deleteTransaction);

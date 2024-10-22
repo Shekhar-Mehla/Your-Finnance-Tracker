@@ -48,6 +48,10 @@ GET  http://localhost:3002/api/v1/transactions
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyODUyNDM5MSwiZXhwIjoxNzI4NTI3OTkxfQ.6SqP0WQiZDhQlvMtVJ9yjFCJoeeR5pR6xKUpLM0oceU
 
+### delete transaction
+DELETE   http://localhost:3002/api/v1/transactions/deleteTransactins
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjFAMSIsImlhdCI6MTcyOTU5MTg1OSwiZXhwIjoxNzI5NTk1NDU5fQ.no4HuUfzvp36wFy643WWe2f9V_ED4f8Ak3MHvyeF1BM
 
 
 
