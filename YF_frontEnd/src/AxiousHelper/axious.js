@@ -53,6 +53,7 @@ export const getUserProfile = async () => {
 
 // post the transaction
 export const postTransaction = async (data) => {
+  console.log("add transation is called")
   const obj = {
     method: "post",
     url: baseurl + "/transactions/addtransaction",

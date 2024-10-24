@@ -26,9 +26,13 @@ export const getTransaction = async (req, res) => {
     const UserId = req.info._id;
     console.log(UserId);
     const result = await TransactionCollection.find({ UserId });
-    res.status(200).json({
-      result,
-    });
+    res
+      .status(200)
+      .json({
+        status: "success",
+        message: "your transactions are ready",
+        result,
+      });
   } catch (error) {
     res.status(400).json({
       error: "error",

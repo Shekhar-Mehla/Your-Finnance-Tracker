@@ -143,3 +143,10 @@ a:hover {
 .display-none {
   display: none;
 }
+.dashboardWrapper {
+  background-color: rgba(255, 81, 0, 0.698);
+}
+.anchor {
+  text-decoration: none;
+  color: white;
+}

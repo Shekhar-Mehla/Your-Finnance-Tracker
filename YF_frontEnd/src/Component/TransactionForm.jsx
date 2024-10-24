@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -24,14 +24,16 @@ const TransactionForm = () => {
         <Row className="justify-content-center align-items-center  ">
           <Col md={12} className=" shadow-lg rounded bg-white">
             <div className="text-center mb-4">
-              <p className="text-muted">Please log in to continue.</p>
+              <p className="text-muted">* All fields are required</p>
             </div>
 
             <Form onSubmit={(e) => handleOnSubmit(e)}>
               <Form.Group
+                onChange={(e) => {
+                  handleOnChange(e);
+                }}
                 className="mb-3"
                 controlId="formGridState"
-                onChange={handleOnChange}
               >
                 <Form.Label>Transaction Type</Form.Label>
                 <Form.Select required name="type" defaultValue="">
@@ -46,7 +48,7 @@ const TransactionForm = () => {
               {LoginInputFields.map((input) => (
                 <CustomeInput
                   key={input.name}
-                  onChange={handleOnChange}
+                  onChange={(e) => handleOnChange(e)}
                   {...input}
                 />
               ))}

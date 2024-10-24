@@ -2,60 +2,63 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { autoLogin } from "../Utility/Autologin.js";
-import { getTranscation } from "../AxiousHelper/axious.js";
+
+import { fetchTransactions } from "../Utility/fetchTransactions.js";
 
 export const CentralState = createContext();
 
 export const CentralstateProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [transactions, setTransactions] = useState([]);
+  const [show, setShow] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+  const autologinflag = useRef(true);
+  const autotransactionflag = useRef(true);
 
-  const fetchTransactions = async () => {
-    try {
-      const transaction = await getTranscation();
-      console.log(transaction);
-      if (transaction) {
-        setTransactions(transaction.result);
-      }
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-    }
+  const toggle = () => {
+    show ? setShow(false) : setShow(true);
   };
-  const flag = useRef(true);
+
+  const goToPage = location?.state?.from?.pathname || location.pathname
+  console.log(goToPage)
+  
+  console.log(location)
   useEffect(() => {
-    user?._id && fetchTransactions() && flag.current;
-    flag.current = false;
-  }, [user?._id]);
-
-  // toggle function to show and hide the transaction form on add transaction button click
-
-  // this useeffect hook responsible to navigate the user once user is authenticated
-  const goToPage = location?.state?.from?.pathname;
-
-  useEffect(() => {
-    if (user?._id) {
-      navigate(goToPage);
+    if (autologinflag.current) {
+      !user?._id && autoLoginUser();
+      return () => (autologinflag.current = false);
     }
-  }, [user._id, goToPage]);
+  }, [user]);
+  useEffect(() => {
+    user?._id && navigate(goToPage);
+  }, [user, goToPage]);
 
   useEffect(() => {
-    !user?._id && autoLoginUser();
-  }, []);
+    if (autotransactionflag.current) {
+      updateTransaction();
+    }
+    return () => (autotransactionflag.current = false);
+  }, [transactions?.length]);
 
   const autoLoginUser = async () => {
-    const user = await autoLogin();
-    if (user?._id) {
-      return setUser(user);
+    const fetchUser = await autoLogin();
+
+    if (fetchUser?._id) {
+      setUser(fetchUser);
+      return;
     }
   };
-
+  const updateTransaction = async () => {
+    const { result } = await fetchTransactions();
+    setTransactions(result);
+  };
   const value = {
     user,
     setUser,
-     fetchTransactions,
+    toggle,
+    show,
 
     transactions,
     setTransactions,

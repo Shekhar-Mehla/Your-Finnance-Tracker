@@ -5,7 +5,7 @@ export const autoLogin = async () => {
   try {
     if (token) {
       const data = await getUserProfile();
-      return data;
+      return data.user;
     }
   } catch (error) {
     console.log(error.message, "no token in the browser storage");

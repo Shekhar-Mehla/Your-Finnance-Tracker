@@ -3,10 +3,13 @@ import {
   postUser,
   loginUser,
   postTransaction,
+  getTranscation,
 } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
 import { userdata } from "./ContextApi.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import { fetchTransactions } from "../Utility/fetchTransactions.js";
 // this function will be called each time we change in input filed
 const handleOnChange = (e, form, setForm) => {
   const { name, value } = e.target;
@@ -15,9 +18,20 @@ const handleOnChange = (e, form, setForm) => {
   setForm({ ...form, [name]: value });
 };
 // this function will be call each time we submit the form such as login,registration and transaction submission
-const handleOnSubmit = async (e, form, setUser, navigate, goToPage) => {
+const handleOnSubmit = async (
+  e,
+  form,
+  goToPage,
+  setUser,
+  navigate,
+  setTransactions,
+  toggle
+) => {
+  console.log(e);
   // prevent the browser refresh on form submission
   e.preventDefault();
+  console.log(form);
+
   console.log(goToPage);
   // this code will be executed when user will register for the first time
   if (
@@ -44,6 +58,15 @@ const handleOnSubmit = async (e, form, setUser, navigate, goToPage) => {
       localStorage.setItem("token", token);
       setUser(User);
       navigate(goToPage);
+      // call transaction api
+
+      const pending = fetchTransactions();
+      toast.promise(pending, {
+        pending: "please what while are fetching the data from server",
+      });
+      const { result } = await pending;
+      setTransactions(result);
+      toast[status](message);
     }
 
     return;
@@ -51,15 +74,21 @@ const handleOnSubmit = async (e, form, setUser, navigate, goToPage) => {
 
   // this code will be executed when user will add new transaction
   if (form.type || form.amount || form.date || form.Tittle) {
-    const pending = postTransaction(form);
-    toast.promise(pending, { pending: "please wait" });
-    const { status, message } = await pending;
-    console.log(status, message);
-    toast[status](message);
+    const { status } = await postTransaction(form);
+    console.log(status);
     if (status == "success") {
-      await fetchTransactions();
-      console.log("i ma hewre");
+      toggle();
+
+      const pending = fetchTransactions();
+      toast.promise(pending, {
+        pending: "please wait while we are processing your request",
+      });
+      const { status, message, result } = await fetchTransactions();
+      console.log(result);
+      setTransactions(result);
+      toast[status](message);
     }
+
     return;
   }
   return toast.error("password did not match");
@@ -67,11 +96,12 @@ const handleOnSubmit = async (e, form, setUser, navigate, goToPage) => {
 
 export const useForm = () => {
   const [form, setForm] = useState({});
-  const { setUser, fetchTransactions } = userdata();
+  const { setUser, setTransactions, toggle } = userdata();
   const navigate = useNavigate();
   const location = useLocation();
   const [isSubmitted, setIssubmitted] = useState(false);
   const goToPage = location?.state?.from?.pathname || "/dashboard";
+  console.log(goToPage);
   const value = {
     handleOnChange: (e) => handleOnChange(e, form, setForm),
 
@@ -79,11 +109,11 @@ export const useForm = () => {
       handleOnSubmit(
         e,
         form,
+        goToPage,
         setUser,
         navigate,
-        goToPage,
-        setIssubmitted,
-        fetchTransactions
+        setTransactions,
+        toggle
       ),
   };
 
