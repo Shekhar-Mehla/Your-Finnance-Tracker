@@ -12,44 +12,23 @@ export const CentralstateProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
   const [show, setShow] = useState(false);
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const autologinflag = useRef(true);
-  const autotransactionflag = useRef(true);
-
   const toggle = () => {
     show ? setShow(false) : setShow(true);
   };
 
-  const goToPage = location?.state?.from?.pathname || location.pathname
-  console.log(goToPage)
-  
-  console.log(location)
   useEffect(() => {
-    if (autologinflag.current) {
-      !user?._id && autoLoginUser();
-      return () => (autologinflag.current = false);
-    }
+    !user?._id && autoLoginUser();
   }, [user]);
-  useEffect(() => {
-    user?._id && navigate(goToPage);
-  }, [user, goToPage]);
-
-  useEffect(() => {
-    if (autotransactionflag.current) {
-      updateTransaction();
-    }
-    return () => (autotransactionflag.current = false);
-  }, [transactions?.length]);
 
   const autoLoginUser = async () => {
     const fetchUser = await autoLogin();
-
+    console.log("auto login cALLED");
     if (fetchUser?._id) {
       setUser(fetchUser);
-      return;
+      updateTransaction();
     }
   };
+
   const updateTransaction = async () => {
     const { result } = await fetchTransactions();
     setTransactions(result);

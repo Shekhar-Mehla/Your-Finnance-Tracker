@@ -6,6 +6,6 @@ import {
 } from "../controller/TransactionController.js";
 
 export const TransactionsRoute = express.Router();
-TransactionsRoute.post("/addtransaction", PostTransaction);
+TransactionsRoute.post("/", PostTransaction);
 TransactionsRoute.get("/", getTransaction);
-TransactionsRoute.delete("/deleteTransactins", deleteTransaction);
+TransactionsRoute.delete("/", deleteTransaction);

@@ -3,11 +3,10 @@ import {
   postUser,
   loginUser,
   postTransaction,
-  getTranscation,
 } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
 import { userdata } from "./ContextApi.jsx";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { fetchTransactions } from "../Utility/fetchTransactions.js";
 // this function will be called each time we change in input filed
@@ -21,7 +20,7 @@ const handleOnChange = (e, form, setForm) => {
 const handleOnSubmit = async (
   e,
   form,
-  goToPage,
+
   setUser,
   navigate,
   setTransactions,
@@ -32,13 +31,11 @@ const handleOnSubmit = async (
   e.preventDefault();
   console.log(form);
 
-  console.log(goToPage);
   // this code will be executed when user will register for the first time
   if (
     form.confirmPasswordHashed &&
     form.passwordHashed == form.confirmPasswordHashed
   ) {
-    console.log("post user");
     const result = postUser(form);
     toast.promise(result, {
       pending: "please wait your request is being processed",
@@ -52,12 +49,13 @@ const handleOnSubmit = async (
   }
   // this code will be executed when user will login
   if (!form.confirmPasswordHashed && !form.type && !form.amount && !form.date) {
+    // call user login api
     const { status, message, token, User } = await loginUser(form);
-    toast[status](message);
+
     if (status === "success") {
       localStorage.setItem("token", token);
       setUser(User);
-      navigate(goToPage);
+
       // call transaction api
 
       const pending = fetchTransactions();
@@ -98,10 +96,7 @@ export const useForm = () => {
   const [form, setForm] = useState({});
   const { setUser, setTransactions, toggle } = userdata();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [isSubmitted, setIssubmitted] = useState(false);
-  const goToPage = location?.state?.from?.pathname || "/dashboard";
-  console.log(goToPage);
+
   const value = {
     handleOnChange: (e) => handleOnChange(e, form, setForm),
 
@@ -109,7 +104,7 @@ export const useForm = () => {
       handleOnSubmit(
         e,
         form,
-        goToPage,
+
         setUser,
         navigate,
         setTransactions,

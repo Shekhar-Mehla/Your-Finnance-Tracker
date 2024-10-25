@@ -20,7 +20,6 @@ const Transaction = () => {
 
   const [display, setDisplay] = useState(false);
   const [transactionsToDispaly, setTransactionsTODisplay] = useState([]);
-  console.log(show);
 
   // Reason i used the useeffect here beacuse transaction becuase of api call is not available when component render for the first time
   useEffect(() => {
@@ -30,7 +29,6 @@ const Transaction = () => {
   const handleOnSelectChange = (e) => {
     const { value, checked } = e.target;
     if (value == "Select All") {
-      console.log("selet all and run this code");
       checked
         ? setTransactionToDelete(
             transactionsToDispaly.map((trans) => trans._id)
@@ -46,14 +44,12 @@ const Transaction = () => {
   };
 
   const handalOnDeletButtonClick = async () => {
-    if (transactionsToDelete.length) {
+    if (transactionsToDelete.length > 0) {
       if (
         confirm(
           `are you sure you want to delete ${transactionsToDelete.length}  transaction ?`
         )
       ) {
-        console.log("delete the transactio");
-
         console.log(transactionsToDelete.length);
         console.log(transactionsToDelete);
 
@@ -66,10 +62,15 @@ const Transaction = () => {
           toast[status](message, { position: "top-center" });
           const { result } = await fetchTransactions();
           setTransactions(result);
-
           setTransactionToDelete([]);
+          setDisplay(!display);
+          return;
+
+          // call transaction api
         }
-        // call transaction api
+      } else {
+        console.log("run on cancel");
+        setTransactionToDelete([]);
       }
     }
     return setDisplay(!display);
@@ -93,6 +94,7 @@ const Transaction = () => {
     <Container>
       {" "}
       <Row>
+        {" "}
         <Modal
           className=" "
           show={show}
@@ -109,6 +111,8 @@ const Transaction = () => {
             <TransactionForm></TransactionForm>
           </Modal.Body>
         </Modal>
+      </Row>
+      <Row className="mt-3 mb-3">
         <Card className="transactionNav">
           <Card.Header>
             {" "}
@@ -134,7 +138,7 @@ const Transaction = () => {
                   ADD Transaction
                 </Button>
               </Col>
-              {transactions.length > 0 && (
+              {transactions?.length > 0 && (
                 <Col md="auto">
                   <Button
                     onClick={handalOnDeletButtonClick}
@@ -148,104 +152,115 @@ const Transaction = () => {
             </Row>
           </Card.Header>
         </Card>
-        <Form.Check
-          className={display ? "display" : "display-none"}
-          value="Select All"
-          onChange={handleOnSelectChange}
-          label="Select All"
-          checked={transactionsToDelete.length == transactionsToDispaly.length}
-        ></Form.Check>
-        {transactions.length ? (
-          <>
-            <Table className="table table-custom table-striped border mt-3  table-hover">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Tittle</th>
-
-                  <th>In</th>
-                  <th>Out</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transactionsToDispaly.map((transaction, i) => {
-                  return (
-                    <tr
-                      key={transaction._id}
-                      style={{
-                        backgroundColor:
-                          transactions.length < 0 ? "#f8d7da" : "#d4edda",
-                      }}
-                    >
-                      <td className="d-flex gap-2 ">
-                        {" "}
-                        {i}
-                        <Form.Check
-                          onChange={handleOnSelectChange}
-                          checked={transactionsToDelete.includes(
-                            transaction._id
-                          )}
-                          value={transaction._id}
-                          className={display ? "display" : "display-none"}
-                        ></Form.Check>
-                      </td>
-
-                      <td> {transaction.Tittle}</td>
-
-                      {transaction.type === "income" ? (
-                        <>
-                          <td className="text-success">
-                            <strong>${transaction.amount}.00</strong>
-                          </td>
-                          <td></td>
-                        </>
-                      ) : (
-                        <>
-                          <td></td>
-                          <td className="text-danger">
-                            <strong className="ml-2">
-                              -${transaction.amount}.00
-                            </strong>
-                          </td>
-                        </>
-                      )}
-
-                      <td>
-                        {new Date(
-                          transaction.TransactionDate
-                        ).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-            <Card className="text-center p-3 tottalBalance mb-3">
-              {TottalBalance > 0 ? (
-                <Row className="text-success">
-                  <strong>Total balance =${TottalBalance}</strong>
-                </Row>
-              ) : (
-                <Row className="text-danger">
-                  <strong>
-                    Total balance =-$
-                    {transactions.length && Math.abs(TottalBalance)}
-                  </strong>
-                </Row>
-              )}
-            </Card>
-          </>
-        ) : (
-          <>
-            <Card>
-              <Card.Body className="text-center fw-bolder fs-5">
-                <strong className="fs-5">NO transaction is reported</strong>
-              </Card.Body>
-            </Card>
-          </>
-        )}
       </Row>
+      {transactions?.length && (
+        <Row>
+          <Col className={display ? "display" : "display-none"}>
+            <Form.Check
+              value="Select All"
+              onChange={handleOnSelectChange}
+              label="Select All"
+              checked={
+                transactionsToDelete.length == transactionsToDispaly.length
+              }
+            ></Form.Check>
+          </Col>
+        </Row>
+      )}
+      {transactions?.length ? (
+        <>
+          <Row>
+            <Col className="p-3">
+              <Table className="table table-custom table-striped border mt-3  table-hover">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Tittle</th>
+
+                    <th>In</th>
+                    <th>Out</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactionsToDispaly.map((transaction, i) => {
+                    return (
+                      <tr
+                        key={transaction._id}
+                        style={{
+                          backgroundColor:
+                            transactions.length < 0 ? "#f8d7da" : "#d4edda",
+                        }}
+                      >
+                        <td className="d-flex gap-2 ">
+                          {" "}
+                          {i}
+                          <Form.Check
+                            onChange={handleOnSelectChange}
+                            checked={transactionsToDelete.includes(
+                              transaction._id
+                            )}
+                            value={transaction._id}
+                            className={display ? "display" : "display-none"}
+                          ></Form.Check>
+                        </td>
+
+                        <td> {transaction.Tittle}</td>
+
+                        {transaction.type === "income" ? (
+                          <>
+                            <td className="text-success">
+                              <strong>${transaction.amount}.00</strong>
+                            </td>
+                            <td></td>
+                          </>
+                        ) : (
+                          <>
+                            <td></td>
+                            <td className="text-danger">
+                              <strong className="ml-2">
+                                -${transaction.amount}.00
+                              </strong>
+                            </td>
+                          </>
+                        )}
+
+                        <td>
+                          {new Date(
+                            transaction.TransactionDate
+                          ).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+          <Card className="text-center p-3 tottalBalance mb-3">
+            {TottalBalance > 0 ? (
+              <Row className="text-success">
+                <strong>Total balance =${TottalBalance}</strong>
+              </Row>
+            ) : (
+              <Row className="text-danger">
+                <strong>
+                  Total balance =-$
+                  {transactions.length && Math.abs(TottalBalance)}
+                </strong>
+              </Row>
+            )}
+          </Card>
+        </>
+      ) : (
+        <>
+          <Card>
+            <Card.Body className="text-center fw-bolder fs-5">
+              <strong className="fs-5">NO transaction is reported</strong>
+            </Card.Body>
+          </Card>
+        </>
+      )}
     </Container>
   );
 };

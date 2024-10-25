@@ -79,7 +79,7 @@ export const getUserProfile = async (req, res, next) => {
       res.status(200).json({
         status: "sucsess",
         message: "user has found",
-        _id,
+
         user,
       });
       return;

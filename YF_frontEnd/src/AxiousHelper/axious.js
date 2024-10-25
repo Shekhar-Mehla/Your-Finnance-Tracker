@@ -53,10 +53,9 @@ export const getUserProfile = async () => {
 
 // post the transaction
 export const postTransaction = async (data) => {
-  console.log("add transation is called")
   const obj = {
     method: "post",
-    url: baseurl + "/transactions/addtransaction",
+    url: baseurl + "/transactions",
     data,
     headers: {
       Authorization: localStorage.getItem("token"),
@@ -78,10 +77,9 @@ export const getTranscation = () => {
 };
 // delete transaction api
 export const deleteTransaction = async (transactionsToDelete) => {
-  console.log("delete axious helper called");
   const obj = {
     method: "delete",
-    url: baseurl + "/transactions/deleteTransactins",
+    url: baseurl + "/transactions",
     data: transactionsToDelete,
 
     headers: {
@@ -89,5 +87,5 @@ export const deleteTransaction = async (transactionsToDelete) => {
     },
   };
   const result = await ApiendPoint(obj);
-  return result
+  return result;
 };

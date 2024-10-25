@@ -6,6 +6,7 @@ import { userdata } from "../context/ContextApi.jsx";
 const Auth = ({ children }) => {
   const { user } = userdata();
   const location = useLocation();
+  console.log(user);
 
   return user?._id ? (
     <>{children}</>

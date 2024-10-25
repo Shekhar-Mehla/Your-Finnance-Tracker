@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-
+import { userdata } from "../context/ContextApi.jsx";
 
 import CustomeInput from "../Component/CustomeInput.jsx";
 import { useForm } from "../context/useForm.js";
 import { InputFields } from "../Utility/Inputfield.js";
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goToPage = location?.state?.from?.pathname || "/dashboard";
   const { handleOnSubmit, handleOnChange } = useForm();
+  const { user } = userdata();
+
+  useEffect(() => {
+    user._id && navigate(goToPage);
+  }, [user._id, goToPage, navigate]);
 
   const LoginInputFields = InputFields.filter(
     (input) => input.name == "email" || input.name == "passwordHashed"

@@ -4,8 +4,11 @@ const token = localStorage.getItem("token");
 export const autoLogin = async () => {
   try {
     if (token) {
-      const data = await getUserProfile();
-      return data.user;
+      const { user } = await getUserProfile();
+
+      if (user?._id) {
+        return user;
+      }
     }
   } catch (error) {
     console.log(error.message, "no token in the browser storage");
