@@ -62,8 +62,16 @@ const DashboardHero = () => {
             <div className="text-warning d-flex justify-content-center ">
               <MdSavings className="reactDashboarSummaryICONS" />
             </div>
-            <div className="text-success fs-5">
-              <strong>${tottalSaving}</strong>
+            <div
+              className={
+                tottalSaving > 0 ? "fs-5 text-success" : "fs-5 text-danger"
+              }
+            >
+              {tottalSaving >= 0 ? (
+                <strong>${Math.abs(tottalSaving)}</strong>
+              ) : (
+                <strong>-${Math.abs(tottalSaving)}</strong>
+              )}
             </div>
           </div>
         </Card>

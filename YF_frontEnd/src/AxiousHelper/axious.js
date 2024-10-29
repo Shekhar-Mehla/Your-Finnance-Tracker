@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseurl = "http://localhost:3002/api/v1";
+const baseurl = import.meta.env.VITE_BASE_URL + "/api/v1";
 import { toast } from "react-toastify";
 
 const ApiendPoint = async ({ data, method, url, headers }) => {

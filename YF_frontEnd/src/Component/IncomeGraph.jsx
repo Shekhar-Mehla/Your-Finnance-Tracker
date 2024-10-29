@@ -47,20 +47,26 @@ const IncomeGraph = () => {
     <div>
       <h3>Income Trend</h3>
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={formattedData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip content={<CustomizedTooltip />} />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="incomes"
-            stroke="#82ca9d"
-            strokeWidth={3}
-            dot={{ stroke: "#82ca9d", strokeWidth: 2, r: 4 }}
-          />
-        </LineChart>
+        {formattedData.length > 0 ? (
+          <LineChart data={formattedData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip content={<CustomizedTooltip />} />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="incomes"
+              stroke="#8ca9d"
+              strokeWidth={3}
+              dot={{ stroke: "#8ca9d", strokeWidth: 2, r: 4 }}
+            />
+          </LineChart>
+        ) : (
+          <div className=" card d-flex justify-content-center align-items-center p-3 m-3">
+            <strong>No income data available</strong>
+          </div>
+        )}
       </ResponsiveContainer>
     </div>
   );

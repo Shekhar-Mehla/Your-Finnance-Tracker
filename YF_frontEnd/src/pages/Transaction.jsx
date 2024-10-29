@@ -145,7 +145,6 @@ const Transaction = () => {
                     className="  fs-2 text-danger bg-transparent border-0 border"
                   >
                     <MdDelete></MdDelete>
-                    <TbHttpDelete></TbHttpDelete>
                   </Button>
                 </Col>
               )}
@@ -153,7 +152,7 @@ const Transaction = () => {
           </Card.Header>
         </Card>
       </Row>
-      {transactions?.length && (
+      {transactions?.length > 0 && (
         <Row>
           <Col className={display ? "display" : "display-none"}>
             <Form.Check

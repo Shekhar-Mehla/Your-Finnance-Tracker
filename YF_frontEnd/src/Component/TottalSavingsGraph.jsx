@@ -40,25 +40,31 @@ const TottalSavingsGraph = () => {
     <div>
       <h3>Saving Trend</h3>
       <ResponsiveContainer width="100%" height={400}>
-        <AreaChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Area
-            type="monotone"
-            dataKey="balance"
-            stroke="#8884d8"
-            fillOpacity={0.3}
-            fill="#8884d8"
-          />
-          <Legend></Legend>
-        </AreaChart>
+        {data.length > 0 ? (
+          <AreaChart
+            width={500}
+            height={400}
+            data={data}
+            margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="balance"
+              stroke="#8884d8"
+              fillOpacity={0.3}
+              fill="#8884d8"
+            />
+            <Legend></Legend>
+          </AreaChart>
+        ) : (
+          <div className=" card d-flex justify-content-center align-items-center p-3 m-3">
+            <strong>No saving data available</strong>
+          </div>
+        )}
       </ResponsiveContainer>
     </div>
   );
