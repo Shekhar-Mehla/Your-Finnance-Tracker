@@ -10,6 +10,7 @@ export const CentralState = createContext();
 export const CentralstateProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [transactions, setTransactions] = useState([]);
+  const [isSubmit, setIsSubmit] = useState(flase);
   const [show, setShow] = useState(false);
 
   const toggle = () => {
@@ -38,6 +39,8 @@ export const CentralstateProvider = ({ children }) => {
     setUser,
     toggle,
     show,
+    setIsSubmit,
+    isSubmit,
 
     transactions,
     setTransactions,

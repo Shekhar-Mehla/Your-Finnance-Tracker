@@ -5,10 +5,10 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import CustomeInput from "../Component/CustomeInput.jsx";
-import { useForm } from "../context/useForm.js";
+import { useForm } from "../CustomHooks/useForm.js";
 import { InputFields } from "../Utility/Inputfield.js";
 
-import { imges } from "../assets/assets.js";
+
 import Quotes from "../Component/Quotes.jsx";
 
 const Register = () => {

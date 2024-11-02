@@ -5,7 +5,7 @@ import {
   postTransaction,
 } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
-import { userdata } from "./ContextApi.jsx";
+import { userdata } from "../context/ContextApi.jsx";
 import { useNavigate } from "react-router-dom";
 
 import { fetchTransactions } from "../Utility/fetchTransactions.js";
@@ -29,7 +29,7 @@ const handleOnSubmit = async (
   console.log(e);
   // prevent the browser refresh on form submission
   e.preventDefault();
-  console.log(form);
+  setIsSubmit(true);
 
   // this code will be executed when user will register for the first time
   if (
@@ -94,7 +94,7 @@ const handleOnSubmit = async (
 
 export const useForm = () => {
   const [form, setForm] = useState({});
-  const { setUser, setTransactions, toggle } = userdata();
+  const { setUser, setTransactions, toggle, setIsSubmit } = userdata();
   const navigate = useNavigate();
 
   const value = {
@@ -108,7 +108,8 @@ export const useForm = () => {
         setUser,
         navigate,
         setTransactions,
-        toggle
+        toggle,
+        setIsSubmit
       ),
   };
 
