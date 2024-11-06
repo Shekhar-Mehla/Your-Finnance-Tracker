@@ -18,9 +18,10 @@ const Login = () => {
   const goToPage = location?.state?.from?.pathname || "/dashboard";
   const { handleOnSubmit, handleOnChange } = useForm();
   const { user } = userdata();
+  console.log(user);
 
   useEffect(() => {
-    user._id && navigate(goToPage);
+    user?._id && navigate(goToPage);
   }, [user._id, goToPage, navigate]);
 
   const LoginInputFields = InputFields.filter(

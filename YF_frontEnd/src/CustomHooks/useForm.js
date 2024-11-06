@@ -20,6 +20,7 @@ const handleOnChange = (e, form, setForm) => {
 const handleOnSubmit = async (
   e,
   form,
+  setIsSubmit,
 
   setUser,
   navigate,
@@ -65,6 +66,7 @@ const handleOnSubmit = async (
       const { result } = await pending;
       setTransactions(result);
       toast[status](message);
+      navigate("/dashbaord");
     }
 
     return;
@@ -84,6 +86,7 @@ const handleOnSubmit = async (
       const { status, message, result } = await fetchTransactions();
       console.log(result);
       setTransactions(result);
+
       toast[status](message);
     }
 

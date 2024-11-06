@@ -10,7 +10,7 @@ export const CentralState = createContext();
 export const CentralstateProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [transactions, setTransactions] = useState([]);
-  const [isSubmit, setIsSubmit] = useState(flase);
+  const [isSubmit, setIsSubmit] = useState(false);
   const [show, setShow] = useState(false);
 
   const toggle = () => {
@@ -24,6 +24,7 @@ export const CentralstateProvider = ({ children }) => {
   const autoLoginUser = async () => {
     const fetchUser = await autoLogin();
     console.log("auto login cALLED");
+    
     if (fetchUser?._id) {
       setUser(fetchUser);
       updateTransaction();
