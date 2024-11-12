@@ -10,7 +10,7 @@ Content-Type: application/json
   "passwordHashed":"111"
 }
 ### get user for login
-@getUrl = https://yft-backend.onrender.com/api/v1/users/login
+@getUrl = http://localhost:3002/api/v1/users/login
 POST {{getUrl}}
 Content-Type: application/json
 

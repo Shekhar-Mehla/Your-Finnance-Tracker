@@ -9,12 +9,10 @@ import Register from "./pages/Register";
 import Transaction from "./pages/Transaction";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import ForgotPassword from "./pages/ForgotPassword";
 import "./App.css";
 
-
 const App = () => {
- 
-
   return (
     <>
       <Routes>
@@ -22,6 +20,10 @@ const App = () => {
           <Route index element={<Login></Login>}></Route>
           <Route path="login" element={<Login></Login>}></Route>
           <Route path="register" element={<Register></Register>}></Route>
+          <Route
+            path="forgotPassword"
+            element={<ForgotPassword></ForgotPassword>}
+          ></Route>
           <Route
             path="dashboard"
             element={

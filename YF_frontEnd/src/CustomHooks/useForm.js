@@ -3,6 +3,7 @@ import {
   postUser,
   loginUser,
   postTransaction,
+  forgotPassword,
 } from "../AxiousHelper/axious.js";
 import { toast } from "react-toastify";
 import { userdata } from "../context/ContextApi.jsx";
@@ -12,7 +13,7 @@ import { fetchTransactions } from "../Utility/fetchTransactions.js";
 // this function will be called each time we change in input filed
 const handleOnChange = (e, form, setForm) => {
   const { name, value } = e.target;
-  console.log(name, value);
+  console.log(name, "+", value);
 
   setForm({ ...form, [name]: value });
 };
@@ -20,17 +21,20 @@ const handleOnChange = (e, form, setForm) => {
 const handleOnSubmit = async (
   e,
   form,
-  setIsSubmit,
 
   setUser,
   navigate,
   setTransactions,
-  toggle
+  toggle,
+  setIsSubmit
 ) => {
-  console.log(e);
   // prevent the browser refresh on form submission
   e.preventDefault();
   setIsSubmit(true);
+  setTimeout(() => {
+    setIsSubmit(false);
+    console.log("button is active now");
+  }, 6000);
 
   // this code will be executed when user will register for the first time
   if (
@@ -49,11 +53,18 @@ const handleOnSubmit = async (
     return;
   }
   // this code will be executed when user will login
-  if (!form.confirmPasswordHashed && !form.type && !form.amount && !form.date) {
+  if (
+    !form.confirmPasswordHashed &&
+    !form.type &&
+    !form.amount &&
+    !form.date &&
+    form.passwordHashed
+  ) {
     // call user login api
     const { status, message, token, User } = await loginUser(form);
-
+    console.log("user login function");
     if (status === "success") {
+      console.log("this login code is executed");
       localStorage.setItem("token", token);
       setUser(User);
 
@@ -66,9 +77,19 @@ const handleOnSubmit = async (
       const { result } = await pending;
       setTransactions(result);
       toast[status](message);
-      navigate("/dashbaord");
     }
 
+    return;
+  }
+  // this code will be executed when user submit their email to get reset password link to their email addresss
+  if (
+    !form.confirmPasswordHashed &&
+    !form.type &&
+    !form.amount &&
+    !form.date &&
+    !form.passwordHashed
+  ) {
+    const result = forgotPassword(form);
     return;
   }
 
@@ -97,9 +118,9 @@ const handleOnSubmit = async (
 
 export const useForm = () => {
   const [form, setForm] = useState({});
-  const { setUser, setTransactions, toggle, setIsSubmit } = userdata();
+  const { setUser, setTransactions, toggle, setIsSubmit, user } = userdata();
   const navigate = useNavigate();
-
+  console.log(user);
   const value = {
     handleOnChange: (e) => handleOnChange(e, form, setForm),
 

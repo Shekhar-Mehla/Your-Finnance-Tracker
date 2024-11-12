@@ -1,6 +1,7 @@
 import { UserCollection } from "../models/userModel/userModel.js";
 import { encryptedPassword, ComparePassword } from "../utils/bcryptjs.js";
 import { jwtTocken } from "../utils/Jwt.js";
+import crypto from "crypto";
 // add new user to the database
 export const PostUsers = async (req, res) => {
   try {
@@ -34,9 +35,12 @@ export const PostUsers = async (req, res) => {
 export const GetUser = async (req, res) => {
   try {
     // verify user to login step by step
+    console.log("hello word");
     const { email } = req.body;
+    console.log(email);
     // step 1. get user by email
     const User = await UserCollection.findOne({ email });
+    console.log(User);
     if (User?._id) {
       console.log("user has found now i will check passowrd");
       // step 2 compare the password using bcrypt
@@ -50,18 +54,70 @@ export const GetUser = async (req, res) => {
         const token = jwtTocken({ email });
 
         User.passwordHashed = null;
+        console.log(User + "hello i am login ");
         res.status(200).json({
           status: "success",
           message: "you have logged i  succesfullly",
           User,
           token,
         });
-        return;
       }
+      return;
     }
     res.status(401).json({
       status: "error",
       message: "invalid email address check your email and try again!",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+};
+export const forgotPassword = async (req, res) => {
+  try {
+    // verify user to login step by step
+    console.log("forgot password api is");
+    const { email } = req.body;
+    console.log(email);
+    // step 1. get user by email
+    const User = await UserCollection.findOne({ email });
+    console.log(User);
+    if (User?._id) {
+      console.log(
+        "all good till here start to implement the forgot password implemetation"
+      );
+
+      // step 1
+      // create the password reset token
+
+      const resetToken = crypto.randomBytes(20).toString("hex");
+      console.log(resetToken);
+      // step 2
+      // create the password reset token expire
+      const resetPasswordExpire = Date.now() + 3600000; // 1 hour expiry time
+      console.log(resetPasswordExpire);
+      // step 3
+      // save token to the database
+      User.resetPasswordToken = resetToken;
+      User.resetPasswordExpire = resetPasswordExpire;
+      User.save();
+
+      // step 4
+      // create url to send to user email with reset token
+      const resetLink =
+        process.env.FRONT_END_RESET_PASSWPRD_LINK + `/:${resetToken}`;
+
+      // step 5
+      // send url to user email:
+
+      return;
+    }
+
+    res.status(400).json({
+      status: "error",
+      message: "you do not have any associated account with this email address",
     });
   } catch (error) {
     res.status(400).json({
